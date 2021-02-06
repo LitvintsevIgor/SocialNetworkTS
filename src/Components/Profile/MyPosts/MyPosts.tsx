@@ -3,17 +3,17 @@ import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 
 
-export function MyPosts(props: any) {
-    debugger;
+export function MyPosts() {
     return (
-        <div>
+        <div className={s.myPosts}>
             My posts
             <div>
-                <textarea></textarea>
+                <div>
+                    <textarea></textarea>
+                </div>
                 <button>Add post</button>
             </div>
-
-            <div>
+            <div className={s.post}>
                 new post
             </div>
             <Post message={"Hello, how are you?"} likesCount={23}/>

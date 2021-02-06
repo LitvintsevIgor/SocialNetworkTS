@@ -7,6 +7,12 @@
     padding: 20px;
 }
 
+.dialogsItems a {
+    color: white;
+    text-decoration: none;
+}
+
+
 .dialog {
     padding: 10px;
 }
