@@ -18,6 +18,7 @@ function DialogItem(props: DialogItemPropsType) {
 };
 
 type MessagePropsType = {
+    id: number
     message: string
 }
 
@@ -31,21 +32,36 @@ function Message(props: MessagePropsType) {
 
 
 export function Dialogs() {
+
+    let dialogs = [
+        {id: 1, name: "Петя"},
+        {id: 2, name: "Ваня"},
+        {id: 3, name: "Маня"},
+        {id: 4, name: "Миша"},
+        {id: 5, name: "Кола"},
+    ]
+
+    let messages = [
+        {id: 1, message: "Привет, как дела?"},
+        {id: 2, message: "Хехей!"},
+        {id: 3, message: "Как твой прогресс?"},
+        {id: 4, message: "Какую музыку случаешь?"},
+        {id: 5, message: "Как твоя собака?"},
+    ]
+
+    let dialogsElements = dialogs
+        .map((d) => <DialogItem id={d.id} name={d.name}/> )
+
+    let messagesElements = messages
+        .map((m) => <Message id={m.id} message={m.message}/>)
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItems}>
-                <DialogItem name={"Петя"} id={1}/>
-                <DialogItem name={"Ваня"} id={2}/>
-                <DialogItem name={"Маня"} id={3}/>
-                <DialogItem name={"Миша"} id={4}/>
-                <DialogItem name={"Кола"} id={5}/>
+                {dialogsElements}
             </div>
             <div className={s.messagesItems}>
-                <Message message={"Привет, как дела?"}/>
-                <Message message={"Хехей!"}/>
-                <Message message={"Как твой прогресс?"}/>
-                <Message message={"Какую музыку случаешь?"}/>
-                <Message message={"Как твои животные?"}/>
+                {messagesElements}
             </div>
         </div>
     )

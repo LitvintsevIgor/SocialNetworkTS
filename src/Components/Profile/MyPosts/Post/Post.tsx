@@ -3,7 +3,8 @@ import s from "./Post.module.css";
 
 
 type MessagePropsType = {
-    message: string,
+    id: number
+    message: string
     likesCount: number
 }
 
@@ -14,7 +15,7 @@ export function Post(props: MessagePropsType) {
             <img src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" alt=""/>
             {props.message}
             <div>
-                <span>Likes</span> { props.likesCount }
+                <span>Likes</span> {props.likesCount}
             </div>
         </div>
     )

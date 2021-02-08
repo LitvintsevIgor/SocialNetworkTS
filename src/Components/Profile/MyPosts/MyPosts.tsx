@@ -4,6 +4,15 @@ import {Post} from "./Post/Post";
 
 
 export function MyPosts() {
+
+    let posts = [
+        {id: 1, message: "Hello, how are you?", likesCount: 23},
+        {id: 2, message: "Its my first post", likesCount: 5}
+    ]
+
+    let postsElements = posts
+        .map((p) => <Post id={p.id} message={p.message} likesCount={p.likesCount}/>)
+
     return (
         <div className={s.myPosts}>
             My posts
@@ -16,8 +25,7 @@ export function MyPosts() {
             <div className={s.post}>
                 new post
             </div>
-            <Post message={"Hello, how are you?"} likesCount={23}/>
-            <Post message={"Its my first post"} likesCount={5}/>
+            {postsElements}
         </div>
     )
 }
