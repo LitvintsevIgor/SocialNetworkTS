@@ -1,4 +1,4 @@
-import React, {TextareaHTMLAttributes} from "react";
+import React, {useState} from "react";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import {PostsType} from "../../../redux/state";
@@ -19,15 +19,17 @@ export function MyPosts(props: MyPostsPropsType) {
     let addPost = () => {
         if (newPostElement.current) {               // проверка, сущесетвует ли вообще этот current
             props.addPostToState(newPostElement.current.value)
+            newPostElement.current.value = "";
         }
     };
 
     // let addPost = () => {
-    //     let text = newPostElement.current;
-    //     if (text) {
-    //         props.addPostToState(text.value)
+    //     if (newPostElement.current) {               // проверка, сущесетвует ли вообще этот current
+    //         props.addPostToState(newPostElement.current.value)
+    //         newPostElement.current.value = "";
     //     }
     // };
+
 
     return (
         <div className={s.myPosts}>
