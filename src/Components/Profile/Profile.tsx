@@ -7,14 +7,18 @@ import {ProfilePageType} from "../../redux/state";
 
 type ProfilePropsType = {
     state: ProfilePageType
-    addPostToState: (newPostMessage: string) => void
+    addPostToState: () => void
+    updateNewPostText: (newText: any) => void
 }
 
 export function Profile(props: ProfilePropsType) {
     return (
         <div>
             <ProfileInfo avatar={"https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"} description={"ava+description"} />
-            <MyPosts posts={props.state.posts} addPostToState={props.addPostToState}/>
+            <MyPosts posts={props.state.posts}
+                     addPostToState={props.addPostToState}
+                     updateNewPostText={props.updateNewPostText}
+                     newPostText={props.state.newPostText}/>
         </div>
     )
 }

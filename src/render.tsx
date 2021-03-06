@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from "./App";
-import {state, addPostToState, StateType} from "./redux/state";
+import {state, addPostToState, StateType, updateNewPostText} from "./redux/state";
 import {BrowserRouter} from "react-router-dom";
 
 
@@ -11,7 +11,7 @@ export function rerenderEntireTree(state: StateType) {
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App state={state} addPostToState={addPostToState}/>
+                <App state={state} addPostToState={addPostToState} updateNewPostText={updateNewPostText}/>
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
