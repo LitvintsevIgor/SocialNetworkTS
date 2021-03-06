@@ -37,7 +37,7 @@ export const addPostToState = () => {
     rerenderEntireTree(state)
 }
 
-export const updateNewPostText = (newText: any) => {
+export const updateNewPostText = (newText: string) => {
     state.profilePage.newPostText = newText
         rerenderEntireTree(state)
 }
@@ -64,6 +64,6 @@ export let state: StateType = {
             {id: 1, message: "Hello, how are you?", likesCount: 23},
             {id: 2, message: "Its my first post", likesCount: 5}
         ],
-        newPostText: "hahahhaah"
+        newPostText: ""
     }
 }
