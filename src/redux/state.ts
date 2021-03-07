@@ -1,4 +1,6 @@
-import {rerenderEntireTree} from "../render";
+let rerenderEntireTree = () => {
+    console.log("State was changed")
+}
 
 export type DialogsType = {
     id: number
@@ -26,22 +28,6 @@ export type StateType = {
     profilePage: ProfilePageType
 }
 
-export const addPostToState = () => {
-    const newPost: PostsType = {
-        id: new Date().getTime(),
-        message: state.profilePage.newPostText,
-        likesCount: 0
-    }
-    state.profilePage.posts.push(newPost)
-    state.profilePage.newPostText = ""
-    rerenderEntireTree(state)
-}
-
-export const updateNewPostText = (newText: string) => {
-    state.profilePage.newPostText = newText
-        rerenderEntireTree(state)
-}
-
 export let state: StateType = {
     dialogsPage: {
         dialogs: [
@@ -67,3 +53,28 @@ export let state: StateType = {
         newPostText: ""
     }
 }
+
+// window.state = state;
+
+export const addPostToState = () => {
+    const newPost: PostsType = {
+        id: new Date().getTime(),
+        message: state.profilePage.newPostText,
+        likesCount: 0
+    }
+    state.profilePage.posts.push(newPost)
+    state.profilePage.newPostText = ""
+    rerenderEntireTree()
+}
+
+export const updateNewPostText = (newText: string) => {
+    state.profilePage.newPostText = newText
+    rerenderEntireTree()
+}
+
+export const subscribe = (observer: () => void) =>  {
+    rerenderEntireTree = observer; // (наблюдатель) - паттерн
+}
+
+
+
