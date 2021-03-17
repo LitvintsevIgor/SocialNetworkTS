@@ -1,28 +1,36 @@
-import React, {TextareaHTMLAttributes} from "react";
+import React, {ChangeEvent, TextareaHTMLAttributes} from "react";
 import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import { Message } from "./Message/Message";
-import {DialogsPageType} from "./../../redux/state";
+import store, {
+    ActionsTypes,
+    AddMessageActionCreator,
+    DialogsPageType, StoreType,
+    UpdateNewMessageTextActionCreator
+} from "./../../redux/state";
 
 
 type DialogsPropsType = {
-    state: DialogsPageType
+    store: StoreType
 }
 
 export function Dialogs(props: DialogsPropsType) {
-    let dialogsElements = props.state.dialogs
+
+    let state = props.store.getState()
+
+    let dialogsElements = state.dialogsPage.dialogs
         .map((d) => <DialogItem id={d.id} name={d.name}/> )
 
-    let messagesElements = props.state.messages
+    let messagesElements = state.dialogsPage.messages
         .map((m) => <Message id={m.id} message={m.message}/>)
 
-    let newMessageElement = React.createRef<HTMLTextAreaElement>();
 
     const addMessage = () => {
-        let text = newMessageElement.current
-        if (text) {
-            alert(text.value)
-        }
+        store.dispatch(AddMessageActionCreator(state.dialogsPage.newMessageText))
+    }
+
+    let onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        store.dispatch(UpdateNewMessageTextActionCreator(e.currentTarget.value))
     }
 
     return (
@@ -32,7 +40,10 @@ export function Dialogs(props: DialogsPropsType) {
             </div>
             <div className={s.messagesItems}>
                 {messagesElements}
-                <textarea ref={newMessageElement}></textarea>
+                <textarea onChange={onMessageChange}
+                          value={state.dialogsPage.newMessageText}
+                          placeholder={"Enter your message"}
+                />
                 <div>
                     <button onClick={addMessage} >Sent message</button>
                 </div>

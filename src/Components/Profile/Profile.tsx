@@ -1,26 +1,25 @@
 import React from "react";
 import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {ActionsTypes, ProfilePageType} from "../../redux/state";
+import {StoreType} from "../../redux/state";
 
 
 
 type ProfilePropsType = {
-    state: ProfilePageType
-    // addPostToState: () => void
-    // updateNewPostText: (newText: any) => void
-    dispatch: (action: ActionsTypes) => void
+    store: StoreType
 }
 
 export function Profile(props: ProfilePropsType) {
+
+    let state = props.store.getState()
+
     return (
         <div>
             <ProfileInfo avatar={"https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"} description={"ava+description"} />
-            <MyPosts posts={props.state.posts}
-                     dispatch={props.dispatch.bind(props.dispatch)}
-                     // addPostToState={props.addPostToState}
-                     // updateNewPostText={props.updateNewPostText}
-                     newPostText={props.state.newPostText}/>
+            <MyPosts posts={state.profilePage.posts}
+                     dispatch={props.store.dispatch.bind(props.store)}
+                     newPostText={state.profilePage.newPostText}
+            />
         </div>
     )
 }

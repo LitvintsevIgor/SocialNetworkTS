@@ -10,12 +10,7 @@ function rerenderEntireTree() {
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App
-                    store={store}
-                    // state={store.getState()}
-                    // addPostToState={store.addPostToState.bind(store)}
-                    // updateNewPostText={store.updateNewPostText.bind(store)}
-                />
+                <App store={store}/>
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
