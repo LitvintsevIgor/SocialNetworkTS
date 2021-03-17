@@ -1,14 +1,15 @@
 import React from "react";
 import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {ProfilePageType} from "../../redux/state";
+import {ActionsTypes, AddPostActionType, ProfilePageType, UpdateNewPostTextActionType} from "../../redux/state";
 
 
 
 type ProfilePropsType = {
     state: ProfilePageType
-    addPostToState: () => void
-    updateNewPostText: (newText: any) => void
+    // addPostToState: () => void
+    // updateNewPostText: (newText: any) => void
+    dispatch: (action: ActionsTypes) => void
 }
 
 export function Profile(props: ProfilePropsType) {
@@ -16,8 +17,9 @@ export function Profile(props: ProfilePropsType) {
         <div>
             <ProfileInfo avatar={"https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"} description={"ava+description"} />
             <MyPosts posts={props.state.posts}
-                     addPostToState={props.addPostToState}
-                     updateNewPostText={props.updateNewPostText}
+                     dispatch={props.dispatch.bind(props.dispatch)}
+                     // addPostToState={props.addPostToState}
+                     // updateNewPostText={props.updateNewPostText}
                      newPostText={props.state.newPostText}/>
         </div>
     )
