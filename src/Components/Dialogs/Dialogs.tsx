@@ -1,13 +1,10 @@
-import React, {ChangeEvent, TextareaHTMLAttributes} from "react";
+import React, {ChangeEvent} from "react";
 import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import { Message } from "./Message/Message";
-import store, {
-    ActionsTypes,
-    AddMessageActionCreator,
-    DialogsPageType, StoreType,
-    UpdateNewMessageTextActionCreator
-} from "./../../redux/state";
+import store, {StoreType} from "./../../redux/state";
+import {AddMessageActionCreator, UpdateNewMessageTextActionCreator} from "../../redux/dialogs-reducer";
+
 
 
 type DialogsPropsType = {

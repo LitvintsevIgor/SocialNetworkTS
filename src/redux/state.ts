@@ -1,7 +1,5 @@
-const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW_POST-TEXT";
-const ADD_MESSAGE = "ADD-MESSAGE";
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
+import {ProfileActionsTypes, profileReducer} from "./profile-reducer";
+import {DialogsActionsTypes, dialogsReducer} from "./dialogs-reducer";
 
 export type DialogsType = {
     id: number
@@ -37,34 +35,7 @@ export type StoreType = {
     subscribe: (observer: () => void) => void
     dispatch: (action: ActionsTypes) => void
 }
-export type ActionsTypes = ReturnType<typeof AddPostActionCreator>
-    | ReturnType<typeof UpdateNewPostTextActionCreator>
-    | ReturnType<typeof AddMessageActionCreator>
-    | ReturnType<typeof UpdateNewMessageTextActionCreator>
-
-
-
-export const AddPostActionCreator = (newPostText: string) => ({
-        type: ADD_POST,
-        newPost: newPostText
-}) as const
-
-export const UpdateNewPostTextActionCreator = (newText: string)  => ({
-        type: UPDATE_NEW_POST_TEXT,
-        newText: newText
-}) as const
-
-export const AddMessageActionCreator = (newMessageText: string) => ({
-        type: ADD_MESSAGE,
-        newPost: newMessageText
-}) as const
-
-export const UpdateNewMessageTextActionCreator = (newText: string) => ({
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    newMessageText: newText
-}) as const
-
-
+export type ActionsTypes = ProfileActionsTypes | DialogsActionsTypes
 
 let store: StoreType = {
     _state: {
@@ -105,30 +76,10 @@ let store: StoreType = {
     },
 
     dispatch(action) {
-        if (action.type === ADD_POST) {
-            const newPost: PostsType = {
-                id: new Date().getTime(),
-                message: this._state.profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
-            this._callSubscriber()
-        } else if (action.type === UPDATE_NEW_POST_TEXT) {
-            this._state.profilePage.newPostText = action.newText
-            this._callSubscriber()
-        } else if (action.type === ADD_MESSAGE) {
-            const newMessage = {
-                id: new Date().getTime(),
-                message: this._state.dialogsPage.newMessageText
-            }
-            this._state.dialogsPage.messages.push(newMessage)
-            this._state.dialogsPage.newMessageText = ""
-            this._callSubscriber()
-        } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
-            this._state.dialogsPage.newMessageText = action.newMessageText
-            this._callSubscriber()
-        }
+
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+        this._callSubscriber()
     }
 }
 export default store;
