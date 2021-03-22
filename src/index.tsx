@@ -10,7 +10,8 @@ function rerenderEntireTree() {
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App state={store.getState()} dispatch={store.dispatch}/>
+                <App store={store}/>
+                {/*<App state={store.getState()} dispatch={store.dispatch}/>*/}
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')

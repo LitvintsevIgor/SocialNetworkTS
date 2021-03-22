@@ -1,5 +1,4 @@
-import {ActionsTypes, DialogsPageType, MessageType} from "./store";
-
+import {DialogsPageType, MessageType} from "./store";
 
 const ADD_MESSAGE = "ADD-MESSAGE";
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
@@ -13,7 +12,7 @@ let initialState = {
         {id: 2, name: "Ваня"},
         {id: 3, name: "Маня"},
         {id: 4, name: "Миша"},
-        {id: 5, name: "Кола"},
+        {id: 5, name: "Коля"},
     ],
     messages: [
         {id: 1, message: "Привет, как дела?"},
@@ -25,7 +24,7 @@ let initialState = {
     newMessageText: ""
 }
 
-export const dialogsReducer = (state: DialogsPageType = initialState, action: ActionsTypes) => {
+export const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsActionsTypes) => {
 
     switch (action.type) {
         case ADD_MESSAGE:
