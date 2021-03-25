@@ -6,6 +6,8 @@ const UPDATE_NEW_POST_TEXT = "UPDATE-NEW_POST-TEXT";
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | ReturnType<typeof UpdateNewPostTextActionCreator>
 
+export type InitialStateType = typeof initialState
+
 let initialState = {
     posts: [
         {id: 1, message: "Hello, how are you?", likesCount: 23},
@@ -14,7 +16,7 @@ let initialState = {
     newPostText: ""
 }
 
-export const profileReducer = (state: ProfilePageType = initialState, action: ProfileActionsTypes) => {
+export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
 
     switch (action.type) {
         case ADD_POST:

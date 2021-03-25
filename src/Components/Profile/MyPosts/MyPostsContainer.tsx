@@ -3,34 +3,43 @@ import {ActionsTypes, PostsType} from "../../../redux/store";
 import {AddPostActionCreator, UpdateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {Store} from "redux";
+import {ReduxStoreType} from "../../../redux/redux-store";
+import { StoreContext } from "../../../StoreContext";
 
 
-type MyPostsPropsType = {
-    // posts: Array<PostsType>
-    // newPostText: string
-    // dispatch: (action: ActionsTypes) => void
-    store: Store
-}
+// type MyPostsPropsType = {
+//     // posts: Array<PostsType>
+//     // newPostText: string
+//     // dispatch: (newText: sting) => void
+//     store: ReduxStoreType
+// }
 
 
-export function MyPostsContainer (props: MyPostsPropsType) {
-
-    let state = props.store.getState();
-
-    let addPost = () => {
-            props.store.dispatch(AddPostActionCreator(state.profilePage.newPostText))
-    };
-
-
-    let onPostChange = (text: string) => {
-        props.store.dispatch(UpdateNewPostTextActionCreator(text))
-    }
+export function MyPostsContainer () {
 
     return (
-        <MyPosts updateNewPostText={onPostChange}
-                 addPost={addPost}
-                 posts={state.profilePage.posts}
-                 newPostText={state.profilePage.newPostText}
-        />
+        <StoreContext.Consumer>
+            {
+            (store) => {
+                let state = store.getState();
+
+                let addPost = () => {
+                    store.dispatch(AddPostActionCreator(state.profilePage.newPostText))
+                };
+
+
+                let onPostChange = (text: string) => {
+                    store.dispatch(UpdateNewPostTextActionCreator(text))
+                }
+                return <MyPosts updateNewPostText={onPostChange}
+                                addPost={addPost}
+                                posts={store.getState().profilePage.posts}
+                                newPostText={store.getState().profilePage.newPostText}
+                />
+            }
+
+        }
+        </StoreContext.Consumer>
+
     )
 }

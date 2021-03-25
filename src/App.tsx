@@ -7,25 +7,25 @@ import {Dialogs} from "./Components/Dialogs/Dialogs";
 import {Route} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
-import {AllAppStateType} from "./redux/redux-store";
+import {AllAppStateType, ReduxStoreType} from "./redux/redux-store";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {Store} from "redux";
 
-type AppPropsType = {
-    // state: AllAppStateType
-    // dispatch: (actions: any) => void
-    store: Store
-}
+// type AppPropsType = {
+//     // state: AllAppStateType
+//     // dispatch: (actions: any) => void
+//     store: ReduxStoreType
+// }
 
-const App: React.FC<AppPropsType> = (props) => {
+const App: React.FC = (props) => {
 
     return (
             <div className={"app-wrapper"}>
                 <Header/>
                 <Navbar/>
                 <div className={"app-wrapper-content"}>
-                    <Route path={"/profile"} render={ () => <Profile  store={props.store}/>}/>
-                    <Route path={"/dialogs"} render={() => <DialogsContainer store={props.store}/>}/>
+                    <Route path={"/profile"} render={ () => <Profile />}/>
+                    <Route path={"/dialogs"} render={() => <DialogsContainer />}/>
                     <Route path={"/news"} component={() => <News/>}/>
                     <Route path={"/music"} component={() => <Music/>}/>
                 </div>
