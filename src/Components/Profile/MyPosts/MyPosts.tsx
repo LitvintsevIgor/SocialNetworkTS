@@ -1,20 +1,23 @@
 import React, {ChangeEvent, useState} from "react";
+import {InitialStateType, PostsType} from "../../../redux/profile-reducer";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {ActionsTypes, PostsType} from "../../../redux/store";
 
 
 type MyPostsPropsType = {
-    posts: Array<PostsType>
-    newPostText: string
-    // dispatch: (action: ActionsTypes) => void
+    profilePage: InitialStateType
+    // posts: Array<PostsType>
+    // newPostText: string
     addPost: () => void
     updateNewPostText: (newPostText: string) => void
 }
 
 
 export function MyPosts(props: MyPostsPropsType) {
-    let postsElements = props.posts
+
+    let state = props.profilePage
+
+    let postsElements = state.posts
         .map((p) => <Post id={p.id} message={p.message} likesCount={p.likesCount}/>)
 
     let onAddPost = () => {
@@ -33,7 +36,7 @@ export function MyPosts(props: MyPostsPropsType) {
             <div>
                 <div>
                     <textarea onChange={onPostChange}
-                              value={props.newPostText}/>
+                              value={state.newPostText}/>
                 </div>
                 <button onClick={onAddPost}>Add post</button>
             </div>

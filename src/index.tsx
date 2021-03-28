@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import App from "./App";
 import store from "./redux/redux-store";
 import {BrowserRouter} from "react-router-dom";
-import {Provider} from "./StoreContext";
+import {Provider} from "react-redux";
 
 
 function rerenderEntireTree() {

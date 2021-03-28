@@ -1,10 +1,18 @@
-import {DialogsPageType, MessageType} from "./store";
-
 const ADD_MESSAGE = "ADD-MESSAGE";
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 
 export type DialogsActionsTypes = ReturnType<typeof AddMessageActionCreator>
     | ReturnType<typeof UpdateNewMessageTextActionCreator>
+
+
+export type DialogsType = {
+    id: number
+    name: string
+}
+export type MessageType = {
+    id: number
+    message: string
+}
 
 export type InitialStateType = typeof initialState
 
@@ -15,19 +23,19 @@ let initialState = {
         {id: 3, name: "Маня"},
         {id: 4, name: "Миша"},
         {id: 5, name: "Коля"},
-    ],
+    ] as DialogsType[] ,
     messages: [
         {id: 1, message: "Привет, как дела?"},
         {id: 2, message: "Хехей!"},
         {id: 3, message: "Как твой прогресс?"},
         {id: 4, message: "Какую музыку случаешь?"},
         {id: 5, message: "Как твоя собака?"},
-    ],
+    ] as MessageType[],
     newMessageText: ""
 }
 
 export const dialogsReducer = (state: InitialStateType = initialState, action: DialogsActionsTypes): InitialStateType  => {
-
+    debugger
     switch (action.type) {
         case ADD_MESSAGE:
             const newMessage: MessageType = {
@@ -36,29 +44,27 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: D
             }
             state.messages.push(newMessage)
             state.newMessageText = ''
-            return state
+            return {...state}
         case UPDATE_NEW_MESSAGE_TEXT:
-            state.newMessageText = action.newMessageText
-            return state
+            state.newMessageText = action.newMessage
+            return {...state}
         default:
             return state
     }
 }
 type AddMessageType = {
-    type:typeof ADD_MESSAGE
-    newPost:string
+    type: typeof ADD_MESSAGE
 }
-export const AddMessageActionCreator = (newMessageText: string) : AddMessageType => ({
-    type: ADD_MESSAGE,
-    newPost: newMessageText
+export const AddMessageActionCreator = () : AddMessageType => ({
+    type: ADD_MESSAGE
 }) as const
 
 type UpdateNewMessageTextType = {
     type: typeof UPDATE_NEW_MESSAGE_TEXT
-    newMessageText: string
+    newMessage: string
 }
 
 export const UpdateNewMessageTextActionCreator = (newText: string) : UpdateNewMessageTextType => ({
     type: UPDATE_NEW_MESSAGE_TEXT,
-    newMessageText: newText
+    newMessage: newText
 }) as const
