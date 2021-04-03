@@ -13,48 +13,20 @@ export type UsersPropsType = {
 
 
 export const Users = (props: UsersPropsType) => {
-    if (props.usersPage.users.length === 0) {
-
-        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-
-            props.setUsers(response.data.items)
-        })
-
-        // props.setUsers(
-        //     [
-        //         {
-        //             id: 0,
-        //             avatar: "https://meragor.com/files/styles//ava_800_800_wm/lev-na-avu-062.jpg",
-        //             followed: true,
-        //             firstName: "Anton",
-        //             status: "You are not alone",
-        //             location: {city: "Voronezh", country: "Russia"}
-        //         },
-        //         {
-        //             id: 1,
-        //             avatar: "https://meragor.com/files/styles//ava_800_800_wm/lev-na-avu-062.jpg",
-        //             followed: false,
-        //             firstName: "Ivan",
-        //             status: "Everything is ok",
-        //             location: {city: "Rostov", country: "Russia"}
-        //         },
-        //         {
-        //             id: 2,
-        //             avatar: "https://meragor.com/files/styles//ava_800_800_wm/lev-na-avu-062.jpg",
-        //             followed: true,
-        //             firstName: "Petr",
-        //             status: "I am sleeping",
-        //             location: {city: "Moscow", country: "Russia"}
-        //         },
-        //     ]
-        // )
+    let getUsers = () => {
+        if (props.usersPage.users.length === 0) {
+            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+                props.setUsers(response.data.items)
+            })
+        }
     }
+
 
     let state = props.usersPage
 
     return (
         <div>
-
+            <button onClick={getUsers}>Get users</button>
             {
                 state.users.map(u => {
                     return (
