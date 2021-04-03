@@ -11,13 +11,18 @@ export type UserLocationType = {
     country: string
 }
 
+export type UserAvatarType = {
+    small: string
+    large: string
+}
+
+
 export type UserType = {
     id: number
-    avatar: string
+    photos: UserAvatarType
     followed: boolean,
-    firstName: string
+    name: string
     status: string
-    location: UserLocationType
 }
 
 export type InitialStateType = {
