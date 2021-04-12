@@ -11,7 +11,6 @@ import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 // }
 
 export function Profile() {
-    debugger
     return (
         <div>
             <ProfileInfo avatar={"https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"} description={"ava+description"} />
