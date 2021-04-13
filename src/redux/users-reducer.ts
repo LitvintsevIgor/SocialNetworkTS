@@ -5,12 +5,12 @@ export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
 export const SET_USERS_TOTAL_COUNT = "SET_USERS_TOTAL_COUNT"
 export const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
 
-export type UsersActionType = ReturnType<typeof followAC>
-    | ReturnType<typeof unfollowAC>
-    | ReturnType<typeof setUsersAC>
-    | ReturnType<typeof setCurrentPageAC>
-    | ReturnType<typeof setUsersTotalCountAC>
-    | ReturnType<typeof toggleIsFetchingAC>
+export type UsersActionType = ReturnType<typeof follow>
+    | ReturnType<typeof unfollow>
+    | ReturnType<typeof setUsers>
+    | ReturnType<typeof setCurrentPage>
+    | ReturnType<typeof setUsersTotalCount>
+    | ReturnType<typeof toggleIsFetching>
 
 export type UserLocationType = {
     city: string
@@ -105,7 +105,7 @@ export type followACType = {
     userId: number
 }
 
-export const followAC = (userId: number): followACType => (
+export const follow = (userId: number): followACType => (
     {type: FOLLOW, userId}
 ) as const
 
@@ -114,7 +114,7 @@ export type UnfollowACType = {
     userId: number
 }
 
-export const unfollowAC = (userId: number): UnfollowACType => (
+export const unfollow = (userId: number): UnfollowACType => (
     {type: UNFOLLOW, userId}
 ) as const
 
@@ -123,7 +123,7 @@ export type SetUsersACType = {
     users: UserType[]
 }
 
-export const setUsersAC = (users: UserType[]): SetUsersACType => (
+export const setUsers = (users: UserType[]): SetUsersACType => (
     {type: SET_USERS, users}
 ) as const
 
@@ -134,7 +134,7 @@ export type SetCurrentPageACType = {
 
 }
 
-export const setCurrentPageAC = (currentPage: number): SetCurrentPageACType => (
+export const setCurrentPage = (currentPage: number): SetCurrentPageACType => (
     {type: SET_CURRENT_PAGE, currentPage}
 ) as const
 
@@ -144,7 +144,7 @@ export type SetUsersTotalCountACType = {
 
 }
 
-export const setUsersTotalCountAC = (totalCount: number): SetUsersTotalCountACType => (
+export const setUsersTotalCount = (totalCount: number): SetUsersTotalCountACType => (
     {type: SET_USERS_TOTAL_COUNT, totalCount}
 ) as const
 
@@ -155,6 +155,6 @@ export type toggleIsFetchingACType = {
 
 }
 
-export const toggleIsFetchingAC = (isFetching: boolean): toggleIsFetchingACType => (
+export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingACType => (
     {type: TOGGLE_IS_FETCHING, isFetching}
 ) as const
