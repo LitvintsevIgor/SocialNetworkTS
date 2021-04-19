@@ -10,10 +10,10 @@ import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 //     // store: ReduxStoreType
 // }
 
-export function Profile() {
+export function Profile(props: any) {
     return (
         <div>
-            <ProfileInfo avatar={"https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"} description={"ava+description"} />
+            <ProfileInfo profile={props.profile} />
             <MyPostsContainer />
         </div>
     )

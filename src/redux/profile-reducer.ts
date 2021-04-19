@@ -1,9 +1,12 @@
+import {ProfileType} from "../Components/Profile/ProfileContainer";
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW_POST-TEXT";
+const SET_USER_PROFILE = "SET_USER_PROFILE";
 
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | ReturnType<typeof UpdateNewPostTextActionCreator>
+    | ReturnType<typeof setUserProfile>
 
 export type InitialStateType = typeof initialState
 
@@ -18,7 +21,8 @@ let initialState = {
         {id: 1, message: "Hello, how are you?", likesCount: 23},
         {id: 2, message: "Its my first post", likesCount: 5}
     ] as PostsType[],
-    newPostText: ""
+    newPostText: "",
+    profile: null
 }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
@@ -43,6 +47,11 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
                 ...state,
                 newPostText: action.newText
             }
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
+            }
         default:
             return state
     }
@@ -51,7 +60,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
 export const AddPostActionCreator = () => ({
     type: ADD_POST,
 }) as const
-export const UpdateNewPostTextActionCreator = (newText: string)  => ({
+export const UpdateNewPostTextActionCreator = (newText: string) => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: newText
+}) as const
+
+export const setUserProfile = (profile: null) => ({
+    type: SET_USER_PROFILE,
+    profile
 }) as const

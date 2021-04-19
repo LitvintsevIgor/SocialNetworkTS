@@ -82,14 +82,14 @@ export type MapStatePropsType = {
     isFetching: boolean
 }
 
-export type MapDispatchPropsType = {
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setUsers: (users: UserType[]) => void
-    setCurrentPage: (currentPage: number) => void
-    setUsersTotalCount: (totalCount: number) => void
-    toggleIsFetching: (isFetching: boolean) => void
-}
+// export type MapDispatchPropsType = {
+//     follow: (userId: number) => void
+//     unfollow: (userId: number) => void
+//     setUsers: (users: UserType[]) => void
+//     setCurrentPage: (currentPage: number) => void
+//     setUsersTotalCount: (totalCount: number) => void
+//     toggleIsFetching: (isFetching: boolean) => void
+// }
 
 let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
     return {

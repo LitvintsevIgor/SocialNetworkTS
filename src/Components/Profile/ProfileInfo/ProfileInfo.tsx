@@ -1,20 +1,27 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
+import {Preloader} from "../../common/Preloader/Preloader";
+import { ProfileType } from "../ProfileContainer";
 
 
 type ProfileInfoPropsType = {
-    avatar: string
-    description: string
+    profile: ProfileType
 }
 
 export function ProfileInfo(props:ProfileInfoPropsType) {
+
+    if (!props.profile) {
+        return <Preloader/>
+    }
+    debugger
     return (
         <div className={s.profileInfo}>
             <img
-                src={props.avatar}
+                src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"
                 alt=""/>
             <div className={s.description}>
-                {props.description}
+                <img src={props.profile.photos.large}/>
+                ava+description
             </div>
         </div>
     )
