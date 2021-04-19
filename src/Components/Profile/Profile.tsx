@@ -1,16 +1,17 @@
 import React from "react";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
+import {ProfileType} from "./ProfileContainer";
 
 
 
-// type ProfilePropsType = {
-//     // state: AllAppStateType
-//     // dispatch: (actions: any)=> void
-//     // store: ReduxStoreType
-// }
+type ProfilePropsType = {
+    profile: ProfileType
+}
 
-export function Profile(props: any) {
+
+
+export function Profile(props: ProfilePropsType) {
     return (
         <div>
             <ProfileInfo profile={props.profile} />

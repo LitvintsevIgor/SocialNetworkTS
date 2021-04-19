@@ -21,7 +21,19 @@ export function ProfileInfo(props:ProfileInfoPropsType) {
                 alt=""/>
             <div className={s.description}>
                 <img src={props.profile.photos.large}/>
-                ava+description
+
+                <div>
+                    Обо мне:
+                    {props.profile.aboutMe}
+                </div>
+                Контакты:
+                <div>
+                    {props.profile.contacts.facebook}
+                </div>
+                <div>
+                    {props.profile.contacts.instagram}
+                </div>
+
             </div>
         </div>
     )
