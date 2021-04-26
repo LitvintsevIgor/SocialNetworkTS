@@ -3,10 +3,28 @@
     background-color: blueviolet;
     display: grid;
     align-items: center;
-
+    grid-template-areas:
+    "im l"
 }
 
+.login {
+    grid-area: l;
+    background-color: blueviolet;
+    display: grid;
+    justify-self: end;
+}
+ .login a {
+     color: white;
+     text-decoration: none;
+ }
+
+
+
+
+
 .header img {
+    display: grid;
+    grid-area: im;
     width: 50px;
     margin: 15px;
 
