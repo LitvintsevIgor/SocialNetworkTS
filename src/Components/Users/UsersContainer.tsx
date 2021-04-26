@@ -33,16 +33,13 @@ export type UsersAPIComponentPropsType = {
 export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsType> {
 
     componentDidMount() {
-        debugger;
         this.props.toggleIsFetching(true)
         usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-
                 this.props.toggleIsFetching(false)
                 this.props.setUsers(data.items)
                 this.props.setUsersTotalCount(data.totalCount)
             })
     }
-
 
     getNewUserPage = (newPage: number) => {
         this.props.toggleIsFetching(true)

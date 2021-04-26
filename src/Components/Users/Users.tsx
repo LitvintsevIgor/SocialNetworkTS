@@ -3,7 +3,7 @@ import UserAvatar from "../../assets/images/UserAvatar.jpeg";
 import React from "react";
 import {UserType} from "../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
-import {instance} from "../../api/api";
+import {instance, usersAPI} from "../../api/api";
 
 export type UsersPropsType = {
     follow: (userId: number) => void
@@ -46,24 +46,41 @@ export const Users = (props: UsersPropsType) => {
                             {u.followed
                                 ? <button onClick={() => {
 
-                                    instance.delete(`/follow/${u.id}`)
-                                        .then(response => {
-                                            if (response.data.resultCode === 0) {
-                                                props.unfollow(u.id)
 
-                                            }
-                                        })
+                                    // instance.delete(`/follow/${u.id}`)
+                                    //     .then(response => {
+                                    //         if (response.data.resultCode === 0) {
+                                    //             props.unfollow(u.id)
+                                    //
+                                    //         }
+                                    //     })
+
+
+                                    usersAPI.unfollow(u.id).then(data => {
+                                        if (data.resultCode === 0) {
+                                            props.unfollow(u.id)
+                                        }
+                                    })
+
+
                                 }}>UNFOLLOW</button>
                                 : <button onClick={() => {
 
-                                    instance.post(`follow/${u.id}`,
-                                        {})
-                                        .then(response => {
-                                            if (response.data.resultCode === 0) {
-                                                props.follow(u.id)
-                                                // props.follow(u.id)
-                                            }
-                                        })
+                                    // instance.post(`follow/${u.id}`,
+                                    //     {})
+                                    //     .then(response => {
+                                    //         if (response.data.resultCode === 0) {
+                                    //             props.follow(u.id)
+                                    //             // props.follow(u.id)
+                                    //         }
+                                    //     })
+
+
+                                    usersAPI.follow(u.id).then(data => {
+                                        if (data.resultCode === 0) {
+                                            props.follow(u.id)
+                                        }
+                                    })
 
 
 
