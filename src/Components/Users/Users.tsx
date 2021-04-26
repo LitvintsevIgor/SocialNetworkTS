@@ -3,7 +3,7 @@ import UserAvatar from "../../assets/images/UserAvatar.jpeg";
 import React from "react";
 import {UserType} from "../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
-import {instance, usersAPI} from "../../api/api";
+import {usersAPI} from "../../api/api";
 
 export type UsersPropsType = {
     follow: (userId: number) => void
@@ -13,6 +13,8 @@ export type UsersPropsType = {
     currentPage: number
     getNewUserPage: (p: number) => void
     users: UserType[]
+    followingInProgress: number []
+    toggleFollowingInProgress: (isFetching: boolean, userID: number) => void
 }
 
 export const Users = (props: UsersPropsType) => {
@@ -44,27 +46,31 @@ export const Users = (props: UsersPropsType) => {
                         </div>
                         <div>
                             {u.followed
-                                ? <button onClick={() => {
+                                ? <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                          onClick={() => {
 
 
-                                    // instance.delete(`/follow/${u.id}`)
-                                    //     .then(response => {
-                                    //         if (response.data.resultCode === 0) {
-                                    //             props.unfollow(u.id)
-                                    //
-                                    //         }
-                                    //     })
+                                              // instance.delete(`/follow/${u.id}`)
+                                              //     .then(response => {
+                                              //         if (response.data.resultCode === 0) {
+                                              //             props.unfollow(u.id)
+                                              //
+                                              //         }
+                                              //     })
+                                              // props.toggleFollowingInProgress(true, u.id)
+                                              props.toggleFollowingInProgress(true, u.id)
+                                              usersAPI.unfollow(u.id).then(data => {
+                                                  if (data.resultCode === 0) {
+                                                      props.unfollow(u.id)
+                                                  }
+                                                  props.toggleFollowingInProgress(false, u.id)
+                                              })
 
 
-                                    usersAPI.unfollow(u.id).then(data => {
-                                        if (data.resultCode === 0) {
-                                            props.unfollow(u.id)
-                                        }
-                                    })
-
-
-                                }}>UNFOLLOW</button>
-                                : <button onClick={() => {
+                                          }
+                                          }>UNFOLLOW</button>
+                                : <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                    onClick={() => {
 
                                     // instance.post(`follow/${u.id}`,
                                     //     {})
@@ -75,13 +81,13 @@ export const Users = (props: UsersPropsType) => {
                                     //         }
                                     //     })
 
-
+                                    props.toggleFollowingInProgress(true, u.id)
                                     usersAPI.follow(u.id).then(data => {
                                         if (data.resultCode === 0) {
                                             props.follow(u.id)
                                         }
+                                        props.toggleFollowingInProgress(false, u.id)
                                     })
-
 
 
                                 }}>FOLLOW</button>}
