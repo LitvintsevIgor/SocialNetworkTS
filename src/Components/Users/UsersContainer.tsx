@@ -10,9 +10,10 @@ import {
     UserType
 } from "../../redux/users-reducer";
 import React from "react";
-import axios from "axios";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
+import {usersAPI} from "../../api/api";
+
 
 
 export type UsersAPIComponentPropsType = {
@@ -32,14 +33,13 @@ export type UsersAPIComponentPropsType = {
 export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsType> {
 
     componentDidMount() {
+        debugger;
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
-            withCredentials: true
-        })
-            .then(response => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+
                 this.props.toggleIsFetching(false)
-                this.props.setUsers(response.data.items)
-                this.props.setUsersTotalCount(response.data.totalCount)
+                this.props.setUsers(data.items)
+                this.props.setUsersTotalCount(data.totalCount)
             })
     }
 
@@ -47,13 +47,20 @@ export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsTyp
     getNewUserPage = (newPage: number) => {
         this.props.toggleIsFetching(true)
         this.props.setCurrentPage(newPage)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`, {
-            withCredentials: true
+
+        usersAPI.getUsers(newPage, this.props.pageSize).then(data => {
+            this.props.toggleIsFetching(false)
+            this.props.setUsers(data.items)
         })
-            .then(response => {
-                this.props.toggleIsFetching(false)
-                this.props.setUsers(response.data.items)
-            })
+
+
+
+        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`, {
+        //     withCredentials: true
+        // })
+        //
+
+
     }
 
     render() {
