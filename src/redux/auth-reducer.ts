@@ -47,7 +47,7 @@ export const setAuthUserDataAC = (id: number, email: string, login: string): Set
 
 // thunkCreator
 
-export const auth = () => {
+export const getAuthUserData = () => {
 
     return (dispatch: Dispatch) => {
 
