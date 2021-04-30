@@ -3,61 +3,66 @@ import {AllAppStateType} from "../../redux/redux-store";
 
 import {
     follow,
+    followSuccess, getUsers,
     InitialStateType,
     setCurrentPage,
-    setUsers, setUsersTotalCount, toggleFollowingInProgress, toggleIsFetching,
-    unfollow,
+    toggleFollowingInProgress, unfollow,
+    unfollowSuccess,
     UserType
 } from "../../redux/users-reducer";
 import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
-import {usersAPI} from "../../api/api";
+
 
 
 
 export type UsersAPIComponentPropsType = {
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setUsers: (users: UserType[]) => void
+    unfollowSuccess: (userId: number) => void
+    // follow: (userId: number) => void
+
+    // setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
-    setUsersTotalCount: (totalCount: number) => void
+    // setUsersTotalCount: (totalCount: number) => void
     totalUsersCount: number
     pageSize: number
     currentPage: number
     users: UserType[]
     isFetching: boolean
-    toggleIsFetching: (isFetching: boolean) => void
+    // toggleIsFetching: (isFetching: boolean) => void
     followingInProgress: number[]
-    toggleFollowingInProgress: (isFetching: boolean, userID: number) => void
+    // toggleFollowingInProgress: (isFetching: boolean, userID: number) => void
+    getUsers: (currentPage: number, pageSize: number) => void
+    follow: (userId: number) => void // thunkCreator
+    unfollow: (userId: number) => void // thunkCreator
 }
 
 export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsType> {
 
     componentDidMount() {
-        this.props.toggleIsFetching(true)
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-                this.props.toggleIsFetching(false)
-                this.props.setUsers(data.items)
-                this.props.setUsersTotalCount(data.totalCount)
-            })
+
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);   // dispatch thunkCreator, getUsers - thunkCreator
+        // this.props.toggleIsFetching(true)
+        // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+        //         this.props.toggleIsFetching(false)
+        //         this.props.setUsers(data.items)
+        //         this.props.setUsersTotalCount(data.totalCount)
+        //     })
     }
 
     getNewUserPage = (newPage: number) => {
-        this.props.toggleIsFetching(true)
-        this.props.setCurrentPage(newPage)
-
-        usersAPI.getUsers(newPage, this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false)
-            this.props.setUsers(data.items)
-        })
 
 
 
-        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`, {
-        //     withCredentials: true
-        // })
+        this.props.getUsers(newPage, this.props.pageSize);
+        // this.props.toggleIsFetching(true)
+        // this.props.setCurrentPage(newPage)
         //
+        // usersAPI.getUsers(newPage, this.props.pageSize).then(data => {
+        //     this.props.toggleIsFetching(false)
+        //     this.props.setUsers(data.items)
+        // })
+
 
 
     }
@@ -74,7 +79,7 @@ export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsTyp
                    unfollow={this.props.unfollow}
                    users={this.props.users}
                    followingInProgress={this.props.followingInProgress}
-                   toggleFollowingInProgress={this.props.toggleFollowingInProgress}
+                   // toggleFollowingInProgress={this.props.toggleFollowingInProgress}
             />
         </>
 
@@ -111,13 +116,16 @@ let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
 
 export const UsersContainer = connect(mapStateToProps,
     {
-        follow,
-        unfollow,
-        setUsers,
+        followSuccess,
+        unfollowSuccess,
+        // setUsers,
         setCurrentPage,
-        setUsersTotalCount,
-        toggleIsFetching,
-        toggleFollowingInProgress
+        // setUsersTotalCount,
+        // toggleIsFetching,
+        // toggleFollowingInProgress,
+        getUsers, // thunkCreator
+        follow, // thunkCreator
+        unfollow, // thunkCreator
     }
 
     )(UsersAPIComponent);
