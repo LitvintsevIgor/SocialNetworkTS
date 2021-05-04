@@ -5,9 +5,11 @@ import {
     UpdateNewMessageTextActionCreator
 } from "../../redux/dialogs-reducer";
 import {AllAppStateType} from "../../redux/redux-store";
-import {Dialogs} from "./Dialogs";
+import {Dialogs, DialogsPropsType} from "./Dialogs";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {Redirect} from "react-router-dom";
+import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
 
 
 
@@ -46,7 +48,7 @@ import {Dispatch} from "redux";
 
 export type MapStatePropsType = {
     dialogsPage: InitialStateType,
-    isAuth: boolean
+    // isAuth: boolean
 }
 
 export type MapDispatchPropsType = {
@@ -58,7 +60,7 @@ export type MapDispatchPropsType = {
 let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
     return {
         dialogsPage: state.dialogsPage,
-        isAuth: state.auth.isAuthorized
+        // isAuth: state.auth.isAuthorized
     }
 }
 
@@ -74,5 +76,7 @@ let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     }
 }
 
+let AuthRedirectComponent = withAuthRedirect(Dialogs)
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);

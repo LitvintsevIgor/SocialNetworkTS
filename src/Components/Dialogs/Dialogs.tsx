@@ -8,7 +8,7 @@ import { Redirect } from "react-router-dom";
 
 
 
-type DialogsPropsType = {
+export type DialogsPropsType = {
     // state: AllAppStateType
     // dispatch: (actions: any)=> void
     dialogsPage: InitialStateType
@@ -41,7 +41,7 @@ export function Dialogs(props: DialogsPropsType) {
         // props.dispatch(UpdateNewMessageTextActionCreator(e.currentTarget.value))
     }
 
-    if (!props.isAuth) return <Redirect to={"/login"}/>
+    // if (!props.isAuth) return <Redirect to={"/login"}/>
 
     return (
         <div className={s.dialogs}>

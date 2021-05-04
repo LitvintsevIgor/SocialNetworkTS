@@ -13,6 +13,7 @@ import {
 import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
+import { withAuthRedirect } from "../../hoc/WithAuthRedirect";
 
 
 
@@ -114,7 +115,7 @@ let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
 }
 
 
-export const UsersContainer = connect(mapStateToProps,
+export const UsersContainer = withAuthRedirect(connect(mapStateToProps,
     {
         followSuccess,
         unfollowSuccess,
@@ -128,4 +129,4 @@ export const UsersContainer = connect(mapStateToProps,
         unfollow, // thunkCreator
     }
 
-    )(UsersAPIComponent);
+    )(UsersAPIComponent));
