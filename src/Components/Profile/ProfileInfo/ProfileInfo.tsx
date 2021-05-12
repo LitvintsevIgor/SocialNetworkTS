@@ -2,6 +2,7 @@ import React from "react";
 import s from "./ProfileInfo.module.css";
 import {Preloader} from "../../common/Preloader/Preloader";
 import { ProfileType } from "../ProfileContainer";
+import {ProfileStatus} from "./ProfileStatus";
 
 
 type ProfileInfoPropsType = {
@@ -16,12 +17,12 @@ export function ProfileInfo(props:ProfileInfoPropsType) {
 
     return (
         <div className={s.profileInfo}>
-            <img
-                src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"
-                alt=""/>
+            {/*<img*/}
+            {/*    src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"*/}
+            {/*    alt=""/>*/}
             <div className={s.description}>
                 <img src={props.profile.photos.large}/>
-
+                <ProfileStatus status={"Hello people!!!"}/>
                 <div>
                     Обо мне:
                     {props.profile.aboutMe}

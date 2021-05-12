@@ -21,7 +21,7 @@ import {Login} from "./Components/Login/Login";
 // }
 
 const App: React.FC = () => {
-
+    debugger
     return (
             <div className={"app-wrapper"}>
                 <HeaderContainer />

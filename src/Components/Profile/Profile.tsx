@@ -4,13 +4,10 @@ import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 import {ProfileType} from "./ProfileContainer";
 
 
-
-
 type ProfilePropsType = {
     profile: ProfileType
 
 }
-
 
 
 export function Profile(props: ProfilePropsType) {
