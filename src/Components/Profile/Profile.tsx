@@ -6,7 +6,8 @@ import {ProfileType} from "./ProfileContainer";
 
 type ProfilePropsType = {
     profile: ProfileType
-
+    status: string
+    updateStatus: (status: string) => void
 }
 
 
@@ -14,7 +15,10 @@ export function Profile(props: ProfilePropsType) {
     debugger
     return (
         <div>
-            <ProfileInfo profile={props.profile} />
+            <ProfileInfo profile={props.profile}
+                         status={props.status}
+                         updateStatus={props.updateStatus}
+            />
             <MyPostsContainer />
         </div>
     )

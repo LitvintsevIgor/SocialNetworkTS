@@ -5,10 +5,12 @@ import {profileAPI} from "../api/api";
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW_POST-TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
+const GET_STATUS = "GET_STATUS";
 
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | ReturnType<typeof UpdateNewPostTextActionCreator>
     | ReturnType<typeof setUserProfile>
+    | ReturnType<typeof getStatusAC>
 
 export type InitialStateType = typeof initialState
 
@@ -44,7 +46,8 @@ let initialState = {
             small: "https://social-network.samuraijs.com/activecontent/images/users/2/user-small.jpg?v=0",
             large: "https://social-network.samuraijs.com/activecontent/images/users/2/user.jpg?v=0"
         }
-    }
+    },
+    status: ""
 }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
@@ -74,6 +77,11 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
                 ...state,
                 profile: action.profile
             }
+        case GET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            }
         default:
             return state
     }
@@ -92,14 +100,39 @@ export const setUserProfile = (profile: ProfileType) => ({
     profile
 }) as const
 
+export const getStatusAC = (status: string) => ({
+    type: GET_STATUS,
+    status
+}) as const
+
 // thunkCreator
 
 export const getProfileTC = (userId: string) => {
 
     return (dispatch: Dispatch) => {
-        profileAPI.getProfile(userId).then( data => {
-           dispatch(setUserProfile(data))
+        profileAPI.getProfile(userId).then(data => {
+            dispatch(setUserProfile(data))
         })
     }
 
+}
+
+export const getStatusTC = (userId: string) => {
+    return (dispatch: Dispatch) => {
+        profileAPI.getStatus(userId).then(data => {
+            dispatch(getStatusAC(data))
+        })
+    }
+}
+
+export const updateStatusTC = (status: string) => {
+    return (dispatch: Dispatch) => {
+        profileAPI.updateStatus(status)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(getStatusAC(status))
+                }
+
+        })
+    }
 }
