@@ -6,7 +6,7 @@ import {
     followSuccess, getUsers,
     InitialStateType,
     setCurrentPage,
-    toggleFollowingInProgress, unfollow,
+    unfollow,
     unfollowSuccess,
     UserType
 } from "../../redux/users-reducer";
@@ -14,6 +14,7 @@ import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
 import { withAuthRedirect } from "../../hoc/WithAuthRedirect";
+import {compose} from "redux";
 
 
 
@@ -115,18 +116,29 @@ let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
 }
 
 
-export const UsersContainer = withAuthRedirect(connect(mapStateToProps,
-    {
-        followSuccess,
-        unfollowSuccess,
-        // setUsers,
-        setCurrentPage,
-        // setUsersTotalCount,
-        // toggleIsFetching,
-        // toggleFollowingInProgress,
-        getUsers, // thunkCreator
-        follow, // thunkCreator
-        unfollow, // thunkCreator
-    }
+// export const UsersContainer = withAuthRedirect(connect(mapStateToProps,
+//     {
+//         followSuccess,
+//         unfollowSuccess,
+//         setCurrentPage,
+//         getUsers, // thunkCreator
+//         follow, // thunkCreator
+//         unfollow, // thunkCreator
+//     }
+//
+//     )(UsersAPIComponent));
 
-    )(UsersAPIComponent));
+export default compose<React.ComponentType> (
+    withAuthRedirect,
+    connect(mapStateToProps,
+            {
+                followSuccess,
+                unfollowSuccess,
+                setCurrentPage,
+                getUsers, // thunkCreator
+                follow, // thunkCreator
+                unfollow, // thunkCreator
+            }
+
+    ))
+(UsersAPIComponent);

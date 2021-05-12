@@ -4,11 +4,12 @@ import {Navbar} from "./Components/Navbar/Navbar";
 import {Route} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
-import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
-import {UsersContainer} from "./Components/Users/UsersContainer";
+import DialogsContainer from "./Components/Dialogs/DialogsContainer";
+import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from './Components/Header/HeaderContainer';
 import {Login} from "./Components/Login/Login";
+
 
 
 
