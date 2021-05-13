@@ -3,12 +3,10 @@ import {Dispatch} from "redux";
 import {profileAPI} from "../api/api";
 
 const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW_POST-TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const GET_STATUS = "GET_STATUS";
 
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
-    | ReturnType<typeof UpdateNewPostTextActionCreator>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof getStatusAC>
 
@@ -25,7 +23,7 @@ let initialState = {
         {id: 1, message: "Hello, how are you?", likesCount: 23},
         {id: 2, message: "Its my first post", likesCount: 5}
     ] as PostsType[],
-    newPostText: "",
+    // newPostText: "",
     profile: {
         aboutMe: "я круто чувак 1001%",
         contacts: {
@@ -56,21 +54,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
         case ADD_POST:
             const newPost: PostsType = {
                 id: new Date().getTime(),
-                message: state.newPostText,
+                message: action.newPostBody,
                 likesCount: 0
             }
-            // state.posts.push(newPost)
-            // state.newPostText = ""
             return {
                 ...state,
                 posts: [...state.posts, newPost],
-                newPostText: ""
-            }
-        case UPDATE_NEW_POST_TEXT:
-            // state.newPostText = action.newText
-            return {
-                ...state,
-                newPostText: action.newText
             }
         case SET_USER_PROFILE:
             return {
@@ -87,12 +76,9 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
     }
 }
 
-export const AddPostActionCreator = () => ({
+export const AddPostActionCreator = (newPostBody: string) => ({
     type: ADD_POST,
-}) as const
-export const UpdateNewPostTextActionCreator = (newText: string) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newText: newText
+    newPostBody: newPostBody
 }) as const
 
 export const setUserProfile = (profile: ProfileType) => ({
