@@ -4,6 +4,9 @@ import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 import {InitialStateType} from "../../redux/dialogs-reducer";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {Textarea} from "../common/FormsControls/FormsControls";
+import {maxLengthCreator, required} from "../../utils/validators/validators";
+import AddMessageForm, {AddMessageFormType} from "./AddMessageForm/AddMessageForm";
 
 
 export type DialogsPropsType = {
@@ -36,30 +39,36 @@ export function Dialogs(props: DialogsPropsType) {
             </div>
             <div className={s.messagesItems}>
                 {messagesElements}
-                <AddMessageReduxForm onSubmit={addNewMessage}/>
+                <AddMessageForm onSubmit={addNewMessage}/>
             </div>
         </div>
     )
 }
 
-type AddMessageFormType = {
-    newMessageBody: string
-}
 
-const AddMessageForm: React.FC<InjectedFormProps<AddMessageFormType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={"Enter your message"}
-                      name={"newMessageBody"}
-                      component={"textarea"}/>
-            <div>
-                <button>Sent message</button>
-            </div>
-        </form>
-    )
-}
-
-const AddMessageReduxForm = reduxForm<AddMessageFormType>({
-    // a unique name for the form
-    form: 'dialogAddMessageForm'
-})(AddMessageForm)
+// const maxLength = maxLengthCreator(20)
+//
+//
+// type AddMessageFormType = {
+//     newMessageBody: string
+// }
+//
+// const AddMessageForm: React.FC<InjectedFormProps<AddMessageFormType>> = (props) => {
+//     return (
+//         <form onSubmit={props.handleSubmit}>
+//             <Field placeholder={"Enter your message"}
+//                    name={"newMessageBody"}
+//                    component={Textarea}
+//                    validate={[required, maxLength]}
+//             />
+//             <div>
+//                 <button>Sent message</button>
+//             </div>
+//         </form>
+//     )
+// }
+//
+// const AddMessageReduxForm = reduxForm<AddMessageFormType>({
+//     // a unique name for the form
+//     form: 'dialogAddMessageForm'
+// })(AddMessageForm)

@@ -11,17 +11,7 @@ import HeaderContainer from './Components/Header/HeaderContainer';
 import {Login} from "./Components/Login/Login";
 
 
-
-
-
-// type AppPropsType = {
-//     // state: AllAppStateType
-//     // dispatch: (actions: any) => void
-//     store: ReduxStoreType
-// }
-
 const App: React.FC = () => {
-    debugger
     return (
             <div className={"app-wrapper"}>
                 <HeaderContainer />
