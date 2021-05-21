@@ -8,7 +8,6 @@ type FormsControlPropsType = {
 
 
 export const FormsControl: React.FC<FormsControlPropsType> = ({meta: {touched, error}, children}) => {
-    debugger
 
     let hasError = touched && error;
 

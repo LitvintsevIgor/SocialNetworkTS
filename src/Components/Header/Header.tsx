@@ -3,8 +3,9 @@ import { NavLink } from "react-router-dom";
 import s from "./Header.module.css";
 
 export type HeaderPropsType = {
-    isAuthorized: boolean
+    isAuth: boolean
     login: string
+    logout: () => void
 }
 
 export function Header(props: HeaderPropsType) {
@@ -14,8 +15,9 @@ export function Header(props: HeaderPropsType) {
                 src="https://facebookbrand.com/wp-content/uploads/2020/10/Logo_Messenger_NewBlurple-399x399-1.png?w=399&h=399"
                 alt="logo"/>
             <div className={s.login}>
-                {props.isAuthorized ? props.login : <NavLink to={"/login"}>Login</NavLink>}
-                {/*<NavLink to={"/login"}>Login</NavLink>*/}
+                {props.isAuth
+                    ? <div> {props.login} - <button onClick={props.logout} >Log out</button>  </div>
+                    : <NavLink to={"/login"}>Login</NavLink>}
             </div>
         </header>
     )

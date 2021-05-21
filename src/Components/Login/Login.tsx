@@ -2,12 +2,16 @@ import React from "react";
 import {InjectedFormProps, reduxForm, Field} from "redux-form";
 import {Input} from "../common/FormsControls/FormsControls";
 import {required} from "../../utils/validators/validators";
+import {connect} from "react-redux";
+import {login} from "../../redux/auth-reducer";
+import {Redirect} from "react-router-dom";
+import {AllAppStateType} from "../../redux/redux-store";
 
 
 type LoginFormDataType = {
-    login: string
+    email: string
     password: string
-    checkbox: string
+    rememberMe: boolean
 }
 
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
@@ -15,10 +19,10 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
         <div>
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field  name={"login"} placeholder={"login"} component={Input} validate={[required]}/>
+                    <Field  name={"email"} placeholder={"Email"} component={Input} validate={[required]}/>
                 </div>
                 <div>
-                    <Field name={"password"} placeholder={"password"} component={Input} validate={[required]} />
+                    <Field name={"password"} placeholder={"Password"} component={Input} type={"password"} validate={[required]} />
                 </div>
                 <div>
                     <Field name={"rememberMe"} type={"checkbox"} component={Input}/> remember me
@@ -37,10 +41,19 @@ const LoginReduxForm = reduxForm<LoginFormDataType>({
 })(LoginForm)
 
 
-export const Login = () => {
+type LoginType = {
+    login: (email: string, password: string, rememberMe: boolean) => void
+    isAuth: boolean
+}
+
+const Login = (props: LoginType) => {
 
     const onSubmit = (formData: LoginFormDataType) => {
-        console.log(formData)
+        props.login(formData.email, formData.password, formData.rememberMe)
+    }
+
+    if (props.isAuth) {
+        return <Redirect to={"/profile"}/>
     }
 
     return (
@@ -50,3 +63,13 @@ export const Login = () => {
         </div>
     )
 }
+
+type mapStateToPropsType = {
+    isAuth: boolean
+}
+
+const mapStateToProps = (state: AllAppStateType): mapStateToPropsType => ({
+    isAuth: state.auth.isAuth
+})
+
+export default connect(mapStateToProps, {login})(Login)
