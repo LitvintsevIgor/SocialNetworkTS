@@ -7,3 +7,8 @@
 .formsControl span {
     color:  red;
 }
+
+.commonError {
+    border: 3px solid red;
+    color: red;
+}

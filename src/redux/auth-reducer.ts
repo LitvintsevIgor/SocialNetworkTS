@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/api";
+import {stopSubmit} from "redux-form";
 
 
 const SET_USER_LOGIN_DATA = "SET_USER_LOGIN_DATA";
@@ -67,10 +68,15 @@ export const login = (email: string, password: string, rememberMe: boolean) => {
     return (dispatch: Dispatch) => {
 
         authAPI.login(email, password, rememberMe)
+
             .then(data => {
+                debugger
                 if (data.resultCode === 0) {
                     // @ts-ignore
                     dispatch(getAuthUserData())
+                } else {
+                    let message = data.messages[0]
+                    dispatch(stopSubmit("login", {_error: message}))
                 }
             })
     }

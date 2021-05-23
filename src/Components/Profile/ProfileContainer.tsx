@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {getProfileTC, getStatusTC, updateStatusTC} from "../../redux/profile-reducer";
 import { AllAppStateType } from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
 
 
@@ -35,13 +34,13 @@ export type ProfileType = {
 }
 
 export type ProfileContainerPropsType = {
-    // setUserProfile: (profile: ProfileType) => void
     profile: ProfileType
     getProfileTC: (userId: string) => void
     getStatusTC: (userId: string) => void
     status: string
     updateStatusTC: (status: string) => void
     // isAuth: boolean
+    authorizedUserId: string
 
 }
 
@@ -57,7 +56,7 @@ class ProfileContainer extends React.Component<CommonPropsType>{
     componentDidMount() {
         let userId = this.props.match.params.userId
         if (!userId) {
-            userId = "2"
+            userId = this.props.authorizedUserId
         }
 
         this.props.getProfileTC(userId);
@@ -81,7 +80,9 @@ class ProfileContainer extends React.Component<CommonPropsType>{
 
 let mapStateToProps = (state: AllAppStateType) => ({
     profile: state.profilePage.profile,
-    status: state.profilePage.status
+    status: state.profilePage.status,
+    authorizedUserId: state.auth.id,
+    isAuth: state.auth.isAuth
 })
 
 
