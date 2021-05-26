@@ -16,6 +16,8 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
     if (!props.profile) {
         return <Preloader/>
     }
+    
+    debugger
 
     return (
         <div className={s.profileInfo}>

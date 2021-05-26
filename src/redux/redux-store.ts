@@ -1,10 +1,11 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {profileReducer} from "./profile-reducer";
-import {dialogsReducer} from "./dialogs-reducer";
+import {ProfileActionsTypes, profileReducer} from "./profile-reducer";
+import {DialogsActionsTypes, dialogsReducer} from "./dialogs-reducer";
 import {UserReducer} from "./users-reducer";
-import {authReducer} from "./auth-reducer";
+import {authReducer, SetAuthUserDataACType} from "./auth-reducer";
 import thunkMiddleware from "redux-thunk";
 import { reducer as formReducer } from 'redux-form';
+import {AppReducer, InitializedSuccessType} from "./app-reducer";
 
 
 let rootReducer = combineReducers({
@@ -12,12 +13,18 @@ let rootReducer = combineReducers({
     dialogsPage: dialogsReducer,
     usersPage: UserReducer,
     auth: authReducer,
+    app: AppReducer,
     form: formReducer
 })
 
 export type AllAppStateType = ReturnType<typeof rootReducer>
 
 let store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+
+export type AllAppActionType = ProfileActionsTypes
+    | InitializedSuccessType
+    | SetAuthUserDataACType
+    | DialogsActionsTypes
 
 
 // @ts-ignore

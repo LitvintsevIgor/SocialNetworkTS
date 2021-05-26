@@ -14,12 +14,6 @@ export type HeaderContainerPropsType = {
 }
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
-
-    componentDidMount() {
-
-        this.props.getAuthUserData(); // thunkCreator
-    }
-
     render() {
         return <Header {...this.props}/>
     }
@@ -35,4 +29,4 @@ const mapStateToProps = (state: AllAppStateType) => {
     }
 }
 
-export default connect(mapStateToProps, {getAuthUserData, logout })(HeaderContainer);
+export default connect(mapStateToProps, {getAuthUserData, logout})(HeaderContainer);

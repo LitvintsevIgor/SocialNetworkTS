@@ -7,8 +7,8 @@ const SET_USER_PROFILE = "SET_USER_PROFILE";
 const GET_STATUS = "GET_STATUS";
 
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
-    | ReturnType<typeof setUserProfile>
-    | ReturnType<typeof getStatusAC>
+    | SetUserProfileType
+    | GetStatusACType
 
 export type InitialStateType = typeof initialState
 
@@ -81,6 +81,8 @@ export const AddPostActionCreator = (newPostBody: string) => ({
     newPostBody: newPostBody
 }) as const
 
+export type SetUserProfileType = ReturnType<typeof setUserProfile>
+
 export const setUserProfile = (profile: ProfileType) => ({
     type: SET_USER_PROFILE,
     profile
@@ -95,24 +97,25 @@ export const getStatusAC = (status: string) => ({
 
 export const getProfileTC = (userId: string) => {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<ProfileActionsTypes>) => {
         profileAPI.getProfile(userId).then(data => {
             dispatch(setUserProfile(data))
         })
     }
-
 }
 
 export const getStatusTC = (userId: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<ProfileActionsTypes>) => {
         profileAPI.getStatus(userId).then(data => {
             dispatch(getStatusAC(data))
         })
     }
 }
 
+export type GetStatusACType = ReturnType<typeof getStatusAC>
+
 export const updateStatusTC = (status: string) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<ProfileActionsTypes>) => {
         profileAPI.updateStatus(status)
             .then(data => {
                 if (data.resultCode === 0) {

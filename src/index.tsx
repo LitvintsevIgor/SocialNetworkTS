@@ -12,7 +12,6 @@ import {Provider} from "react-redux";
             <BrowserRouter>
                 <Provider store={store}>
                     <App />
-                    {/*<App state={store.getState()} dispatch={store.dispatch}/>*/}
                 </Provider>
             </BrowserRouter>
         </React.StrictMode>,
