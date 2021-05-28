@@ -3,7 +3,7 @@ import {AllAppStateType} from "../../redux/redux-store";
 
 import {
     follow,
-    followSuccess, getUsers,
+    followSuccess, requestUsers,
     InitialStateType,
     setCurrentPage,
     unfollow,
@@ -15,26 +15,28 @@ import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
 import { withAuthRedirect } from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
+import {
+    getCurrentPage, getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers,
+    getUsersPage
+} from "../../redux/users-selectors";
 
 
 
 
 export type UsersAPIComponentPropsType = {
     unfollowSuccess: (userId: number) => void
-    // follow: (userId: number) => void
-
-    // setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
-    // setUsersTotalCount: (totalCount: number) => void
     totalUsersCount: number
     pageSize: number
     currentPage: number
     users: UserType[]
     isFetching: boolean
-    // toggleIsFetching: (isFetching: boolean) => void
     followingInProgress: number[]
-    // toggleFollowingInProgress: (isFetching: boolean, userID: number) => void
-    getUsers: (currentPage: number, pageSize: number) => void
+    requestUsers: (currentPage: number, pageSize: number) => void
     follow: (userId: number) => void // thunkCreator
     unfollow: (userId: number) => void // thunkCreator
 }
@@ -42,31 +44,11 @@ export type UsersAPIComponentPropsType = {
 export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsType> {
 
     componentDidMount() {
-
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);   // dispatch thunkCreator, getUsers - thunkCreator
-        // this.props.toggleIsFetching(true)
-        // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-        //         this.props.toggleIsFetching(false)
-        //         this.props.setUsers(data.items)
-        //         this.props.setUsersTotalCount(data.totalCount)
-        //     })
+        this.props.requestUsers(this.props.currentPage, this.props.pageSize);   // dispatch thunkCreator, getUsers - thunkCreator
     }
 
     getNewUserPage = (newPage: number) => {
-
-
-
-        this.props.getUsers(newPage, this.props.pageSize);
-        // this.props.toggleIsFetching(true)
-        // this.props.setCurrentPage(newPage)
-        //
-        // usersAPI.getUsers(newPage, this.props.pageSize).then(data => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(data.items)
-        // })
-
-
-
+        this.props.requestUsers(newPage, this.props.pageSize);
     }
 
     render() {
@@ -81,15 +63,12 @@ export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsTyp
                    unfollow={this.props.unfollow}
                    users={this.props.users}
                    followingInProgress={this.props.followingInProgress}
-                   // toggleFollowingInProgress={this.props.toggleFollowingInProgress}
             />
         </>
 
 
     }
 }
-
-
 
 export type MapStatePropsType = {
     usersPage: InitialStateType
@@ -101,32 +80,29 @@ export type MapStatePropsType = {
     followingInProgress: number[]
 }
 
-
 let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
     return {
-        usersPage: state.usersPage,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        users: state.usersPage.users,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        usersPage: getUsersPage(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        users: getUsers(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
     }
-
 }
 
-
-// export const UsersContainer = withAuthRedirect(connect(mapStateToProps,
-//     {
-//         followSuccess,
-//         unfollowSuccess,
-//         setCurrentPage,
-//         getUsers, // thunkCreator
-//         follow, // thunkCreator
-//         unfollow, // thunkCreator
+// let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
+//     return {
+//         usersPage: state.usersPage,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         currentPage: state.usersPage.currentPage,
+//         users: state.usersPage.users,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress
 //     }
-//
-//     )(UsersAPIComponent));
+// }
 
 export default compose<React.ComponentType> (
     withAuthRedirect,
@@ -135,7 +111,7 @@ export default compose<React.ComponentType> (
                 followSuccess,
                 unfollowSuccess,
                 setCurrentPage,
-                getUsers, // thunkCreator
+                requestUsers, // thunkCreator
                 follow, // thunkCreator
                 unfollow, // thunkCreator
             }

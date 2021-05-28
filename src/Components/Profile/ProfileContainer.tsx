@@ -5,6 +5,8 @@ import {getProfileTC, getStatusTC, updateStatusTC} from "../../redux/profile-red
 import {AllAppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {Preloader} from "../common/Preloader/Preloader";
 
 
 export type ContactsType = {
@@ -41,6 +43,7 @@ export type ProfileContainerPropsType = {
     updateStatusTC: (status: string) => void
     // isAuth: boolean
     authorizedUserId: string
+    isFetching: boolean
 
 }
 
@@ -64,20 +67,23 @@ class ProfileContainer extends React.Component<CommonPropsType> {
 
         this.props.getProfileTC(userId);
         this.props.getStatusTC(userId)
-
     }
 
 
+
     render() {
-        debugger
         // if (!this.props.isAuth) return <Redirect to={"/login"}/>
 
         return (
-            <Profile {...this.props}
-                     profile={this.props.profile}
-                     status={this.props.status}
-                     updateStatus={this.props.updateStatusTC}
-            />
+            <>
+                {this.props.isFetching && <Preloader/>}
+                <Profile {...this.props}
+                         profile={this.props.profile}
+                         status={this.props.status}
+                         updateStatus={this.props.updateStatusTC}
+                />
+            </>
+
         )
     }
 }
@@ -86,12 +92,13 @@ let mapStateToProps = (state: AllAppStateType) => ({
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     authorizedUserId: state.auth.id,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    isFetching: state.usersPage.isFetching
 })
 
 
 export default compose<React.ComponentType>(
-    // withAuthRedirect,
     connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC}),
-    withRouter
+    withRouter,
+    withAuthRedirect
 )(ProfileContainer);

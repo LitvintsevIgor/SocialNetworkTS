@@ -17,8 +17,10 @@ export const usersAPI = {
     },
 
     unfollow (userID: number) {
-        return instance.delete(`unfollow/${userID}`)
+        debugger
+        return instance.delete(`follow/${userID}`)
             .then( response => {
+                debugger
                 return response.data
             })
     },

@@ -190,11 +190,12 @@ export const toggleFollowingInProgress = (isFetching: boolean, userID: number ):
 
 // thunkCreators:
 
-export const getUsers = (currentPage: number, pageSize: number) => {  // thunkCreator
+export const requestUsers = (page: number, pageSize: number) => {  // thunkCreator
 
     return (dispatch: Dispatch) => {
         dispatch(toggleIsFetching(true))
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        usersAPI.getUsers(page, pageSize).then(data => {
+            dispatch(setCurrentPage(page))
             dispatch(toggleIsFetching(false))
             dispatch(setUsers(data.items))
             dispatch(setUsersTotalCount(data.totalCount))
@@ -218,10 +219,11 @@ export const follow = (userId: number) => {  // thunkCreator
 }
 
 export const unfollow = (userId: number) => {  // thunkCreator
-
+debugger
     return (dispatch: Dispatch) => {
         dispatch(toggleFollowingInProgress(true, userId))
         usersAPI.unfollow(userId).then(data => {
+            debugger
             if (data.resultCode === 0) {
                 dispatch(unfollowSuccess(userId))
             }
