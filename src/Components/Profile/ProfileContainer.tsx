@@ -76,7 +76,7 @@ class ProfileContainer extends React.Component<CommonPropsType> {
 
         return (
             <>
-                {this.props.isFetching && <Preloader/>}
+                {/*{this.props.isFetching && <Preloader/>}*/}
                 <Profile {...this.props}
                          profile={this.props.profile}
                          status={this.props.status}
