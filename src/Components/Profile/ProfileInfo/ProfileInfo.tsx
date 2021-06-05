@@ -20,9 +20,9 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
 
     return (
         <div className={s.profileInfo}>
-            {/*<img*/}
-            {/*    src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"*/}
-            {/*    alt=""/>*/}
+            <img
+                src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/beaches--ocean/aerial-view-of-the-beach-shore.jpg"
+                alt=""/>
             <div className={s.description}>
                 <img src={props.profile.photos.large}/>
                 {/*<ProfileStatus status={props.status}*/}
