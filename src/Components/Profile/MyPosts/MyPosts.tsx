@@ -2,7 +2,7 @@ import React from "react";
 import {InitialStateType} from "../../../redux/profile-reducer";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {InjectedFormProps, Field, reduxForm} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/FormsControls/FormsControls";
 
@@ -13,13 +13,14 @@ type MyPostsPropsType = {
 }
 
 
-export function MyPosts(props: MyPostsPropsType) {
+export const MyPosts = React.memo((props: MyPostsPropsType) => {
+
+    console.log("RENDER")
 
     let state = props.profilePage
 
     let postsElements = state.posts
         .map((p) => <Post id={p.id} message={p.message} likesCount={p.likesCount}/>)
-
 
     let addNewPost = (values: MyPostFormType) => {
         props.addPost(values.newPostBody);
@@ -39,7 +40,7 @@ export function MyPosts(props: MyPostsPropsType) {
             {postsElements}
         </div>
     )
-}
+})
 
 type MyPostFormType = {
     newPostBody: string

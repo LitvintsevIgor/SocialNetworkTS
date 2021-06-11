@@ -7,7 +7,6 @@ type ProfileStatusPropsType = {
 }
 
 export const ProfileStatusWithHooks = (props: ProfileStatusPropsType) => {
-    debugger
 
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState("");
@@ -26,7 +25,6 @@ export const ProfileStatusWithHooks = (props: ProfileStatusPropsType) => {
         setEditMode(false)
         props.updateStatus(status)
     }
-
 
     return (
         <div>

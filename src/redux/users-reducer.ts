@@ -219,11 +219,9 @@ export const follow = (userId: number) => {  // thunkCreator
 }
 
 export const unfollow = (userId: number) => {  // thunkCreator
-debugger
     return (dispatch: Dispatch) => {
         dispatch(toggleFollowingInProgress(true, userId))
         usersAPI.unfollow(userId).then(data => {
-            debugger
             if (data.resultCode === 0) {
                 dispatch(unfollowSuccess(userId))
             }
