@@ -5,10 +5,12 @@ import {profileAPI} from "../api/api";
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const GET_STATUS = "GET_STATUS";
+const DELETE_POST = "DELETE_POST";
 
 export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | SetUserProfileType
     | GetStatusACType
+    | DeletePostType
 
 export type InitialStateType = typeof initialState
 
@@ -18,6 +20,28 @@ export type PostsType = {
     likesCount: number
 }
 
+// export type ProfileType = {
+//     aboutMe: string,
+//     contacts: {
+//         facebook: string,
+//         website: null | string,
+//         vk: string,
+//         twitter: string,
+//         instagram: string,
+//         youtube: null | string,
+//         github: string,
+//         mainLink: null | string
+//     },
+//     lookingForAJob: boolean,
+//     lookingForAJobDescription: string,
+//     fullName: string,
+//     userId: number,
+//     photos: {
+//         small: string,
+//         large: string
+//     }
+// }
+
 let initialState = {
     posts: [
         {id: 1, message: "Hello, how are you?", likesCount: 23},
@@ -25,24 +49,24 @@ let initialState = {
     ] as PostsType[],
     // newPostText: "",
     profile: {
-        aboutMe: "я круто чувак 1001%",
+        aboutMe: "",
         contacts: {
-            facebook: "facebook.com",
-            website: null,
-            vk: "vk.com/dimych",
-            twitter: "https://twitter.com/@sdf",
-            instagram: "instagra.com/sds",
-            youtube: null,
-            github: "github.com",
-            mainLink: null
+            facebook: "",
+            website: "",
+            vk: "",
+            twitter: "",
+            instagram: "",
+            youtube: "",
+            github: "",
+            mainLink: ""
         },
-        lookingForAJob: true,
-        lookingForAJobDescription: "не ищу, а дурачусь",
-        fullName: "samurai dimych",
-        userId: 2,
+        lookingForAJob: false,
+        lookingForAJobDescription: "",
+        fullName: "",
+        userId: 0,
         photos: {
-            small: "https://social-network.samuraijs.com/activecontent/images/users/2/user-small.jpg?v=0",
-            large: "https://social-network.samuraijs.com/activecontent/images/users/2/user.jpg?v=0"
+            small: "",
+            large: ""
         }
     },
     status: ""
@@ -51,6 +75,8 @@ let initialState = {
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
 
     switch (action.type) {
+        case "DELETE_POST":
+            return {...state, posts: state.posts.filter( (p) => p.id !== action.postId )}
         case ADD_POST:
             const newPost: PostsType = {
                 id: new Date().getTime(),
@@ -92,6 +118,13 @@ export const getStatusAC = (status: string) => ({
     type: GET_STATUS,
     status
 }) as const
+
+export const deletePost = (postId: number) => ({
+    type: DELETE_POST,
+    postId
+} as const)
+
+type DeletePostType = ReturnType<typeof deletePost>
 
 // thunkCreator
 

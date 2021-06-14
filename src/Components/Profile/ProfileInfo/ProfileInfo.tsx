@@ -7,7 +7,7 @@ import {ProfileStatusWithHooks} from "./ProfileStatusWithHooks";
 
 
 type ProfileInfoPropsType = {
-    profile: ProfileType
+    profile?: ProfileType
     status: string
     updateStatus: (status: string) => void
 }
@@ -17,6 +17,8 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
     if (!props.profile) {
         return <Preloader/>
     }
+
+
 
     return (
         <div className={s.profileInfo}>

@@ -6,18 +6,17 @@ import {AllAppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
-import {Preloader} from "../common/Preloader/Preloader";
 
 
 export type ContactsType = {
     "facebook": string
-    "website": null,
+    "website": string
     "vk": string
     "twitter": string
     "instagram": string
-    "youtube": null,
+    "youtube": string
     "github": string
-    "mainLink": null
+    "mainLink": string
 }
 
 export type PhotosType = {
@@ -41,7 +40,6 @@ export type ProfileContainerPropsType = {
     getStatusTC: (userId: string) => void
     status: string
     updateStatusTC: (status: string) => void
-    // isAuth: boolean
     authorizedUserId: string
     isFetching: boolean
 
@@ -55,7 +53,6 @@ type PathParamType = {
 type CommonPropsType = RouteComponentProps<PathParamType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<CommonPropsType> {
-
     componentDidMount() {
         let userId = this.props.match.params.userId
         if (!userId) {

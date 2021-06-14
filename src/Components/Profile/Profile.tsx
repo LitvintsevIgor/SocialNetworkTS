@@ -11,7 +11,7 @@ type ProfilePropsType = {
 }
 
 
-export function Profile(props: ProfilePropsType) {
+export const Profile = React.memo((props: ProfilePropsType) =>  {
 
     return (
         <div>
@@ -22,4 +22,4 @@ export function Profile(props: ProfilePropsType) {
             <MyPostsContainer />
         </div>
     )
-}
+})
