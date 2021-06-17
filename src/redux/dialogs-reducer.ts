@@ -1,9 +1,6 @@
-const ADD_MESSAGE = "ADD-MESSAGE";
-
+const ADD_MESSAGE = "DIALOGS/ADD-MESSAGE";
 
 export type DialogsActionsTypes = ReturnType<typeof AddMessageActionCreator>
-
-
 
 export type DialogsType = {
     id: number
@@ -40,8 +37,6 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: D
                 id: new Date().getTime(),
                 message: action.newMessageBody
             }
-            // state.messages.push(newMessage)
-            // state.newMessageText = ''
             return {
                 ...state,
                 messages: [...state.messages, newMessage],

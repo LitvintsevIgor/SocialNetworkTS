@@ -11,7 +11,7 @@ import HeaderContainer from './Components/Header/HeaderContainer';
 import Login from "./Components/Login/Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {InitializedSuccessTC, InitialStateType} from "./redux/app-reducer";
+import {InitializedSuccessTC} from "./redux/app-reducer";
 import {Preloader} from "./Components/common/Preloader/Preloader";
 import {AllAppStateType} from "./redux/redux-store";
 
@@ -62,5 +62,3 @@ export default compose<React.ComponentType> (
     connect(mapStateToProps, {InitializedSuccessTC}),
     withRouter
 )(App);
-
-// connect(null, {getAuthUserData})(App);

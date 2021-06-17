@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const instance = axios.create({
     withCredentials: true,
     headers: {"API-KEY": "792fb186-796b-4fb1-b58b-aab163ce4b24"},
@@ -8,76 +7,44 @@ export const instance = axios.create({
 })
 
 export const usersAPI = {
-
-    getUsers (currentPage: number, pageSize: number) {
-        return instance.get(`users?page=${currentPage}&count=${pageSize}`)
-            .then( response => {
-                return response.data
-            })
+    async getUsers (currentPage: number, pageSize: number) {
+        return await instance.get(`users?page=${currentPage}&count=${pageSize}`)
     },
-
-    unfollow (userID: number) {
-
-        return instance.delete(`follow/${userID}`)
-            .then( response => {
-                return response.data
-            })
+    async unfollow (userID: number) {
+        return await instance.delete<CommonResponseType>(`follow/${userID}`)
     },
-
-    follow (userID: number) {
-        return instance.post(`follow/${userID}`)
-            .then( response => {
-                return response.data
-            })
+    async follow (userID: number) {
+        return await instance.post<CommonResponseType>(`follow/${userID}`)
     }
 }
 
 export const authAPI = {
-
-    auth () {
-        return instance.get(`auth/me`)
-            .then( response => {
-                return response.data
-            })
+    async authMe () {
+        return await instance.get(`auth/me`)
     },
-
-    login (email: string, password: string, rememberMe: boolean = false) {
-        return instance.post(`auth/login`, {email, password, rememberMe})
-            .then( response => {
-                return response.data
-            })
+    async loginMe (email: string, password: string, rememberMe: boolean = false) {
+        return await instance.post(`auth/login`, {email, password, rememberMe})
     },
-    logout () {
-        return instance.delete(`auth/login`)
-            .then( response => {
-                return response.data
-            })
+    async logoutMe () {
+        return await instance.delete(`auth/login`)
     },
-
-
 }
 
 export const profileAPI = {
-
-    getProfile(userId: string) {
-        return instance.get(`profile/${userId}`)
-            .then(response => {
-                return response.data
-            })
+    async getProfile(userId: string) {
+        return await instance.get(`profile/${userId}`)
     },
-
-    getStatus(userId: string) {
-        return instance.get(`profile/status/${userId}`)
-            .then(response => {
-                return response.data
-            })
+    async getStatus(userId: string) {
+        return await instance.get(`profile/status/${userId}`)
     },
-
-    updateStatus(status: string) {
-        return instance.put(`profile/status`, {status: status})
-            .then(response => {
-                return response.data
-            })
+    async updateStatus(status: string) {
+        return await instance.put(`profile/status`, {status: status})
     }
+}
 
+export type CommonResponseType<T = {}> = {
+    data: T
+    messages: string[]
+    fieldsErrors: string[]
+    resultCode: number
 }

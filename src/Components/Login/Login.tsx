@@ -1,6 +1,6 @@
 import React from "react";
 import {InjectedFormProps, reduxForm, Field} from "redux-form";
-import {Input} from "../common/FormsControls/FormsControls";
+import {createField, Input} from "../common/FormsControls/FormsControls";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
@@ -15,22 +15,14 @@ type LoginFormDataType = {
     rememberMe: boolean
 }
 
-const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
+const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = ({handleSubmit, error}) => {
     return (
         <div>
-            <form onSubmit={props.handleSubmit}>
-                <div>
-                    <Field  name={"email"} placeholder={"Email"} component={Input} validate={[required]}/>
-                </div>
-                <div>
-                    <Field name={"password"} placeholder={"Password"} component={Input} type={"password"} validate={[required]} />
-                </div>
-                <div>
-                    <Field name={"rememberMe"} type={"checkbox"} component={Input}/> remember me
-                </div>
-
-                    { props.error &&  <div className={style.commonError} >{props.error}</div>}
-
+            <form onSubmit={handleSubmit}>
+                {createField("email", "Email", Input, [required])}
+                {createField("password", "Password", Input, [required], "password")}
+                {createField("rememberMe", null, Input, [], "checkbox", "remember me")}
+                    {error &&  <div className={style.commonError} >{error}</div>}
                 <div>
                     <button>Submit</button>
                 </div>
@@ -39,12 +31,7 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
     )
 }
 
-const LoginReduxForm = reduxForm<LoginFormDataType>({
-    // a unique name for the form
-    form: 'login'
-})(LoginForm)
-
-
+const LoginReduxForm = reduxForm<LoginFormDataType>({form: 'login'})(LoginForm)
 type LoginType = {
     login: (email: string, password: string, rememberMe: boolean) => void
     isAuth: boolean

@@ -37,22 +37,23 @@ export type UsersAPIComponentPropsType = {
     isFetching: boolean
     followingInProgress: number[]
     requestUsers: (currentPage: number, pageSize: number) => void
-    follow: (userId: number) => void // thunkCreator
-    unfollow: (userId: number) => void // thunkCreator
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
 }
 
 export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsType> {
 
     componentDidMount() {
-        this.props.requestUsers(this.props.currentPage, this.props.pageSize);   // dispatch thunkCreator, getUsers - thunkCreator
+        const {currentPage, pageSize} = this.props
+        this.props.requestUsers(currentPage, pageSize);
     }
 
     getNewUserPage = (newPage: number) => {
-        this.props.requestUsers(newPage, this.props.pageSize);
+        const {pageSize} = this.props
+        this.props.requestUsers(newPage, pageSize);
     }
 
     render() {
-
         return <>
                 {this.props.isFetching && <Preloader/>}
             <Users totalUsersCount={this.props.totalUsersCount}
@@ -65,8 +66,6 @@ export class UsersAPIComponent extends React.Component<UsersAPIComponentPropsTyp
                    followingInProgress={this.props.followingInProgress}
             />
         </>
-
-
     }
 }
 
@@ -92,18 +91,6 @@ let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
     }
 }
 
-// let mapStateToProps = (state: AllAppStateType): MapStatePropsType => {
-//     return {
-//         usersPage: state.usersPage,
-//         pageSize: state.usersPage.pageSize,
-//         totalUsersCount: state.usersPage.totalUsersCount,
-//         currentPage: state.usersPage.currentPage,
-//         users: state.usersPage.users,
-//         isFetching: state.usersPage.isFetching,
-//         followingInProgress: state.usersPage.followingInProgress
-//     }
-// }
-
 export default compose<React.ComponentType> (
     withAuthRedirect,
     connect(mapStateToProps,
@@ -111,9 +98,9 @@ export default compose<React.ComponentType> (
                 followSuccess,
                 unfollowSuccess,
                 setCurrentPage,
-                requestUsers, // thunkCreator
-                follow, // thunkCreator
-                unfollow, // thunkCreator
+                requestUsers,
+                follow,
+                unfollow
             }
 
     ))
