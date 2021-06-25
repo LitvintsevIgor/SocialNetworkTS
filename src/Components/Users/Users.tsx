@@ -1,8 +1,5 @@
-import style from "./Users.module.css";
-import UserAvatar from "../../assets/images/UserAvatar.jpeg";
 import React from "react";
 import {UserType} from "../../redux/users-reducer";
-import {NavLink} from "react-router-dom";
 import {Paginator} from "../common/Paginator/Paginator";
 import {User} from "./User";
 
@@ -30,8 +27,8 @@ export const Users: React.FC<UsersPropsType> = ({
 
     return (
         <div>
-            <Paginator totalUsersCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage}
-                       getNewUserPage={getNewUserPage}/>
+            <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage}
+                       getNewUserPage={getNewUserPage} portionSize={10}/>
             <div>
                 {users.map(u => {
                     return (
