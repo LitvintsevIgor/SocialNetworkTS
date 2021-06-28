@@ -50,7 +50,7 @@ type PathParamType = {
     userId: string
 }
 
-type CommonPropsType = RouteComponentProps<PathParamType> & ProfileContainerPropsType
+export type CommonPropsType = RouteComponentProps<PathParamType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<CommonPropsType> {
     componentDidMount() {

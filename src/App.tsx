@@ -4,9 +4,7 @@ import {Navbar} from "./Components/Navbar/Navbar";
 import {BrowserRouter, Route, withRouter} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
-import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
-import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from './Components/Header/HeaderContainer';
 import Login from "./Components/Login/Login";
 import {connect, Provider} from "react-redux";
@@ -14,7 +12,11 @@ import {compose} from "redux";
 import {InitializedSuccessTC} from "./redux/app-reducer";
 import {Preloader} from "./Components/common/Preloader/Preloader";
 import store, {AllAppStateType} from "./redux/redux-store";
+import {withSuspense} from "./hoc/WithSuspense";
 
+
+const DialogsContainer = React.lazy(() => import('./Components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./Components/Profile/ProfileContainer'));
 
 type AppType = {
     InitializedSuccessTC: () => void
@@ -36,8 +38,8 @@ class App extends React.Component<AppType> {
                     <Navbar/>
                     <div className={"app-wrapper-content"}>
                         <Route path={"/login"} render={() => <Login/>}/>
-                        <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
-                        <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
+                        <Route path={"/profile/:userId?"} render={withSuspense(ProfileContainer)}/>
+                        <Route path={"/dialogs"} render={withSuspense(DialogsContainer)}/>
                         <Route path={"/users"} render={() => <UsersContainer/>}/>
                         <Route path={"/news"} component={() => <News/>}/>
                         <Route path={"/music"} component={() => <Music/>}/>
