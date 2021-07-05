@@ -2,6 +2,9 @@
     padding: 20px;
 }
 
-.profileInfo img {
-    height: 400px;
+.mainPhoto {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
 }
+

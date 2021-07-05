@@ -117,7 +117,6 @@ export const requestUsers = (page: number, pageSize: number) => async (dispatch:
 }
 
 export const followUnfollowFlow = async (dispatch: Dispatch, userId: number, apiMethod: (userID: number) => Promise<AxiosResponse<CommonResponseType>>, actionCreator: (userId: number) => {type: "USERS/FOLLOW" | "USERS/UNFOLLOW", userId: number}) => {
-    debugger
     dispatch(toggleFollowingInProgress(true, userId))
     const response = await apiMethod(userId)
     if (response.data.resultCode === 0) {

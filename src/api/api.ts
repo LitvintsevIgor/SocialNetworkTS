@@ -1,4 +1,5 @@
 import axios from "axios";
+import {photoFileType} from "../redux/profile-reducer";
 
 export const instance = axios.create({
     withCredentials: true,
@@ -39,6 +40,14 @@ export const profileAPI = {
     },
     async updateStatus(status: string) {
         return await instance.put(`profile/status`, {status: status})
+    },
+    async changePhoto(file: photoFileType) {
+        const bodyFormData = new FormData();
+        // @ts-ignore
+        bodyFormData.append('image', file);
+        return await instance.put(`/profile/photo`, bodyFormData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
     }
 }
 

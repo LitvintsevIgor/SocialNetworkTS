@@ -1,7 +1,7 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {getProfileTC, getStatusTC, updateStatusTC} from "../../redux/profile-reducer";
+import {changePhotoTC, getProfileTC, getStatusTC, photoFileType, updateStatusTC} from "../../redux/profile-reducer";
 import {AllAppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
@@ -42,6 +42,7 @@ export type ProfileContainerPropsType = {
     updateStatusTC: (status: string) => void
     authorizedUserId: string
     isFetching: boolean
+    changePhotoTC: (file: photoFileType) => void
 
 }
 
@@ -53,7 +54,8 @@ type PathParamType = {
 export type CommonPropsType = RouteComponentProps<PathParamType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<CommonPropsType> {
-    componentDidMount() {
+
+    refreshProfile () {
         let userId = this.props.match.params.userId
         if (!userId) {
             userId = this.props.authorizedUserId
@@ -68,16 +70,28 @@ class ProfileContainer extends React.Component<CommonPropsType> {
 
 
 
+    componentDidMount() {
+       this.refreshProfile()
+    }
+
+
+    componentDidUpdate(prevProps: Readonly<CommonPropsType>, prevState: Readonly<{}>) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId) {
+            this.refreshProfile()
+        }
+    }
+
+
     render() {
-        // if (!this.props.isAuth) return <Redirect to={"/login"}/>
 
         return (
             <>
-                {/*{this.props.isFetching && <Preloader/>}*/}
                 <Profile {...this.props}
+                         isOwner={!this.props.match.params.userId}
                          profile={this.props.profile}
                          status={this.props.status}
                          updateStatus={this.props.updateStatusTC}
+                         changePhoto={this.props.changePhotoTC}
                 />
             </>
 
@@ -95,7 +109,7 @@ let mapStateToProps = (state: AllAppStateType) => ({
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC}),
+    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC, changePhotoTC}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);

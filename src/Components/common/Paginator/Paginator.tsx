@@ -10,7 +10,6 @@ export type PaginatorPropsType = {
 }
 
 export const Paginator:React.FC<PaginatorPropsType> = ({totalItemsCount, pageSize,getNewUserPage, currentPage, portionSize}) => {
-    debugger
     let pagesCount = Math.ceil(totalItemsCount / pageSize)
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
