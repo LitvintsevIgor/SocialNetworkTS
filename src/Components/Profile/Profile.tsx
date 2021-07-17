@@ -1,5 +1,5 @@
 import React from "react";
-import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
+import {ProfileFormDataType, ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 import {ProfileType} from "./ProfileContainer";
 import {photoFileType} from "../../redux/profile-reducer";
@@ -11,6 +11,7 @@ type ProfilePropsType = {
     updateStatus: (status: string) => void
     isOwner: boolean
     changePhoto: (file: photoFileType) => void
+    editProfileDataTC: (formData: ProfileFormDataType) => void
 }
 
 
@@ -23,6 +24,7 @@ export const Profile = React.memo((props: ProfilePropsType) =>  {
                          updateStatus={props.updateStatus}
                          isOwner={props.isOwner}
                          changePhoto={props.changePhoto}
+                         editProfileDataTC={props.editProfileDataTC}
 
             />
             <MyPostsContainer />

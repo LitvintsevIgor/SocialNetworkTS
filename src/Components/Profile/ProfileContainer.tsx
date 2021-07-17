@@ -1,22 +1,30 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {changePhotoTC, getProfileTC, getStatusTC, photoFileType, updateStatusTC} from "../../redux/profile-reducer";
+import {
+    changePhotoTC,
+    editProfileDataTC,
+    getProfileTC,
+    getStatusTC,
+    photoFileType,
+    updateStatusTC
+} from "../../redux/profile-reducer";
 import {AllAppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {ProfileFormDataType} from "./ProfileInfo/ProfileInfo";
 
 
 export type ContactsType = {
-    "facebook": string
-    "website": string
-    "vk": string
-    "twitter": string
-    "instagram": string
-    "youtube": string
-    "github": string
-    "mainLink": string
+    facebook: string
+    website: string
+    vk: string
+    twitter: string
+    instagram: string
+    youtube: string
+    github: string
+    mainLink: string
 }
 
 export type PhotosType = {
@@ -26,7 +34,7 @@ export type PhotosType = {
 
 export type ProfileType = {
     aboutMe: string
-    contacts: ContactsType
+    contacts: {[key:string]: string}
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
@@ -43,7 +51,7 @@ export type ProfileContainerPropsType = {
     authorizedUserId: string
     isFetching: boolean
     changePhotoTC: (file: photoFileType) => void
-
+    editProfileDataTC: (formData: ProfileFormDataType) => void
 }
 
 
@@ -92,6 +100,7 @@ class ProfileContainer extends React.Component<CommonPropsType> {
                          status={this.props.status}
                          updateStatus={this.props.updateStatusTC}
                          changePhoto={this.props.changePhotoTC}
+                         editProfileDataTC={this.props.editProfileDataTC}
                 />
             </>
 
@@ -109,7 +118,7 @@ let mapStateToProps = (state: AllAppStateType) => ({
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC, changePhotoTC}),
+    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC, changePhotoTC, editProfileDataTC}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);

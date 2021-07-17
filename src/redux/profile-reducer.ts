@@ -1,12 +1,17 @@
 import {ProfileType} from "../Components/Profile/ProfileContainer";
 import {Dispatch} from "redux";
-import {profileAPI} from "../api/api";
+import {authAPI, profileAPI} from "../api/api";
+import {ProfileFormDataType} from "../Components/Profile/ProfileInfo/ProfileInfo";
+import {ThunkAction} from "redux-thunk";
+import {AllAppActionType, AllAppStateType} from "./redux-store";
+import {StateType} from "./store";
 
 const ADD_POST = "PROFILE/ADD-POST";
 const SET_USER_PROFILE = "PROFILE/SET_USER_PROFILE";
 const GET_STATUS = "PROFILE/GET_STATUS";
 const DELETE_POST = "PROFILE/DELETE_POST";
 const CHANGE_PHOTO = "PROFILE/CHANGE_PHOTO";
+const EDIT_PROFILE = "PROFILE/EDIT_PROFILE";
 
 let initialState = {
     posts: [
@@ -15,16 +20,7 @@ let initialState = {
     ] as PostsType[],
     profile: {
         aboutMe: "",
-        contacts: {
-            facebook: "",
-            website: "",
-            vk: "",
-            twitter: "",
-            instagram: "",
-            youtube: "",
-            github: "",
-            mainLink: ""
-        },
+        contacts: {},
         lookingForAJob: false,
         lookingForAJobDescription: "",
         fullName: "",
@@ -46,7 +42,6 @@ export type photoFileType = {
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
     switch (action.type) {
         case CHANGE_PHOTO:
-            debugger
             return {...state, profile: {...state.profile, photos: action.file}}
         case DELETE_POST:
             return {...state, posts: state.posts.filter((p) => p.id !== action.postId)}
@@ -82,6 +77,7 @@ export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE
 export const getStatusAC = (status: string) => ({type: GET_STATUS, status} as const)
 export const deletePost = (postId: number) => ({type: DELETE_POST, postId} as const)
 export const changePhotoAC = (file: photoFileType) => ({type: CHANGE_PHOTO, file} as const)
+export const editProfileDataAC = (profile: ProfileType) => ({type: EDIT_PROFILE, profile} as const)
 
 // TYPES
 export type InitialStateType = typeof initialState
@@ -90,6 +86,7 @@ export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | ReturnType<typeof getStatusAC>
     | ReturnType<typeof deletePost>
     | ReturnType<typeof changePhotoAC>
+    | ReturnType<typeof editProfileDataAC>
 export type PostsType = {
     id: number
     message: string
@@ -115,9 +112,17 @@ export const updateStatusTC = (status: string) => async (dispatch: Dispatch<Prof
 }
 
 export const changePhotoTC = (file: photoFileType) => async (dispatch: Dispatch<ProfileActionsTypes>) => {
-    debugger
     const response = await profileAPI.changePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(changePhotoAC(response.data.data.photos))
+    }
+}
+
+export const editProfileDataTC = (formData: ProfileFormDataType): ThunkAction<void, AllAppStateType, unknown, AllAppActionType> => async (dispatch, getState) => {
+    debugger
+    const userId = getState().auth.id
+    const response = await profileAPI.editProfileData(formData)
+    if (response.data.resultCode === 0) {
+        dispatch(getProfileTC(userId.toString()))
     }
 }
