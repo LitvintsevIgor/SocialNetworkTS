@@ -2,7 +2,7 @@ import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {
-    changePhotoTC,
+    changePhotoTC, changeProfileUpdateSuccessAC,
     editProfileDataTC,
     getProfileTC,
     getStatusTC,
@@ -33,13 +33,14 @@ export type PhotosType = {
 }
 
 export type ProfileType = {
-    aboutMe: string
+    AboutMe: string
     contacts: {[key:string]: string}
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
     userId: number
     photos: PhotosType
+    onSubmit: () => void
 }
 
 export type ProfileContainerPropsType = {
@@ -52,6 +53,7 @@ export type ProfileContainerPropsType = {
     isFetching: boolean
     changePhotoTC: (file: photoFileType) => void
     editProfileDataTC: (formData: ProfileFormDataType) => void
+    changeProfileUpdateSuccessAC: (profileUpdateSuccess: boolean) => void
 }
 
 
@@ -80,6 +82,7 @@ class ProfileContainer extends React.Component<CommonPropsType> {
 
     componentDidMount() {
        this.refreshProfile()
+
     }
 
 
@@ -101,6 +104,7 @@ class ProfileContainer extends React.Component<CommonPropsType> {
                          updateStatus={this.props.updateStatusTC}
                          changePhoto={this.props.changePhotoTC}
                          editProfileDataTC={this.props.editProfileDataTC}
+                         changeProfileUpdateSuccessAC={this.props.changeProfileUpdateSuccessAC}
                 />
             </>
 
@@ -118,7 +122,7 @@ let mapStateToProps = (state: AllAppStateType) => ({
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC, changePhotoTC, editProfileDataTC}),
+    connect(mapStateToProps, {getProfileTC, getStatusTC, updateStatusTC, changePhotoTC, editProfileDataTC, changeProfileUpdateSuccessAC}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);

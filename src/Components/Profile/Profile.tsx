@@ -12,6 +12,7 @@ type ProfilePropsType = {
     isOwner: boolean
     changePhoto: (file: photoFileType) => void
     editProfileDataTC: (formData: ProfileFormDataType) => void
+    changeProfileUpdateSuccessAC: (profileUpdateSuccess: boolean) => void
 }
 
 
@@ -25,6 +26,7 @@ export const Profile = React.memo((props: ProfilePropsType) =>  {
                          isOwner={props.isOwner}
                          changePhoto={props.changePhoto}
                          editProfileDataTC={props.editProfileDataTC}
+                         changeProfileUpdateSuccessAC={props.changeProfileUpdateSuccessAC}
 
             />
             <MyPostsContainer />

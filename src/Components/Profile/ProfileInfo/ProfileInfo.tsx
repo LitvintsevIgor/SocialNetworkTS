@@ -1,12 +1,13 @@
-import React, {ChangeEvent, Dispatch, SetStateAction, useState} from "react";
+import React, {ChangeEvent} from "react";
 import s from "./ProfileInfo.module.css";
 import {Preloader} from "../../common/Preloader/Preloader";
 import {ProfileType} from "../ProfileContainer";
 import {ProfileStatusWithHooks} from "./ProfileStatusWithHooks";
 import UserAvatar from "../../../assets/images/UserAvatar.jpeg";
 import {photoFileType} from "../../../redux/profile-reducer";
-import {createField, Input, Textarea} from "../../common/FormsControls/FormsControls";
-import {InjectedFormProps, reduxForm} from "redux-form";
+import {ProfileDataReduxForm} from "./ProfileDataReduxForm";
+import {useSelector} from "react-redux";
+import {AllAppStateType} from "../../../redux/redux-store";
 
 
 type ProfileInfoPropsType = {
@@ -16,6 +17,7 @@ type ProfileInfoPropsType = {
     isOwner: boolean
     changePhoto: (file: photoFileType) => void
     editProfileDataTC: (formData: ProfileFormDataType) => void
+    changeProfileUpdateSuccessAC: (profileUpdateSuccess: boolean) => void
 }
 
 export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
@@ -24,17 +26,19 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
                                                                 updateStatus,
                                                                 isOwner,
                                                                 changePhoto,
-                                                                editProfileDataTC
+                                                                editProfileDataTC,
+                                                                changeProfileUpdateSuccessAC
                                                             }) => {
 
-    const [editMode, setEditMode] = useState(false)
+    const profileUpdateSuccess = useSelector<AllAppStateType, boolean>( state =>  state.profilePage.profileUpdateSuccess)
 
-    const onSubmit = (formData: ProfileFormDataType) => {
+    const onSubmit = (formData: ProfileType) => {
         editProfileDataTC(formData)
-        setEditMode(false)
     }
 
-
+    const changeEditMode = () => {
+       changeProfileUpdateSuccessAC(true)
+    }
 
     if (!profile) {
         return <Preloader/>
@@ -46,7 +50,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
             changePhoto(photo)
         }
     }
-    debugger
+
     return (
         <div className={s.profileInfo}>
             <div className={s.description}>
@@ -59,7 +63,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
                                         updateStatus={updateStatus}
                 />
                 <div>
-                    {editMode ? <ProfileFormDataReduxForm initialValues={profile} onSubmit={onSubmit}/> : <ProfileData profile={profile} status={status} updateStatus={updateStatus} editMode={editMode} setEditMode={setEditMode} isOwner={isOwner}/>}
+                    {profileUpdateSuccess ? <ProfileDataReduxForm initialValues={profile} onSubmit={onSubmit} profile={profile}/> : <ProfileData profile={profile} status={status} updateStatus={updateStatus} isOwner={isOwner} changeEditMode={changeEditMode}/>}
                 </div>
             </div>
         </div>
@@ -71,12 +75,11 @@ export type ProfileDataPropsType = {
     updateStatus: (status: string) => void
     status: string
     isOwner: boolean
-    editMode: boolean
-    setEditMode: Dispatch<SetStateAction<boolean>>
+    changeEditMode: () => void
 
 }
 
-export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, editMode, setEditMode}) => {
+export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, changeEditMode}) => {
 
     if (!profile) {
         return <Preloader/>
@@ -89,7 +92,7 @@ export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, e
             </div>
             <div>
                 Обо мне:
-                {profile.aboutMe}
+                {profile.AboutMe}
             </div>
             <div>
                 <div>
@@ -101,46 +104,20 @@ export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, e
             </div>
             <Contacts contacts={profile.contacts}/>
             <div>
-                {isOwner && <button onClick={ () => {setEditMode(!editMode)} }>Edit profile info</button>}
+                {isOwner && <button onClick={ changeEditMode }>Edit profile info</button>}
             </div>
         </div>
     )
 }
 
 export type ProfileFormDataType = {
+    contacts: {[key:string]: string}
     fullName: string
     AboutMe: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
     onSubmit: () => void
 }
-
-const ProfileFormData: React.FC<InjectedFormProps<ProfileFormDataType>> = ({handleSubmit}) => {
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <button>Save</button>
-                </div>
-                <div>
-                    <b>Full name:</b> {createField("fullName", "Full name", Input)}
-                </div>
-                <div>
-                    <b>About me:</b> {createField("aboutMe", "Some information about you", Input)}
-                </div>
-                <div>
-                    <b>Looking for a job:</b> {createField("lookingForAJob", null, Input, [], "checkbox")}
-                </div>
-                <div>
-                    <b>Looking for a job(Description):</b> {createField("lookingForAJobDescription", "Description about job", Textarea)}
-                </div>
-            </form>
-        </div>
-    )
-}
-
-
-export const ProfileFormDataReduxForm =  reduxForm<ProfileFormDataType>({form: 'Edit profile'})(ProfileFormData)
 
 export type ContactsPropsType = {
     contacts: {[key:string]: string}
@@ -156,7 +133,7 @@ export const Contacts: React.FC<ContactsPropsType> = ({contacts}) => {
 
     return (
         <div>
-            Контакты:
+            Contacts:
             {Object.keys(contacts).map( (c) => {
                 return (
                     <div><b>{c}: </b>{getKeyValue(contacts)(c)}</div>

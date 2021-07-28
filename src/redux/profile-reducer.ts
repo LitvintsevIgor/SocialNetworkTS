@@ -5,6 +5,7 @@ import {ProfileFormDataType} from "../Components/Profile/ProfileInfo/ProfileInfo
 import {ThunkAction} from "redux-thunk";
 import {AllAppActionType, AllAppStateType} from "./redux-store";
 import {StateType} from "./store";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = "PROFILE/ADD-POST";
 const SET_USER_PROFILE = "PROFILE/SET_USER_PROFILE";
@@ -12,6 +13,7 @@ const GET_STATUS = "PROFILE/GET_STATUS";
 const DELETE_POST = "PROFILE/DELETE_POST";
 const CHANGE_PHOTO = "PROFILE/CHANGE_PHOTO";
 const EDIT_PROFILE = "PROFILE/EDIT_PROFILE";
+const PROFILE_UPDATE_SUCCESS = "PROFILE/PROFILE_UPDATE_SUCCESS";
 
 let initialState = {
     posts: [
@@ -19,7 +21,7 @@ let initialState = {
         {id: 2, message: "Its my first post", likesCount: 5}
     ] as PostsType[],
     profile: {
-        aboutMe: "",
+        AboutMe: "",
         contacts: {},
         lookingForAJob: false,
         lookingForAJobDescription: "",
@@ -27,7 +29,8 @@ let initialState = {
         userId: 0,
         photos: {}
     },
-    status: ""
+    status: "",
+    profileUpdateSuccess: false
 }
 
 export type photoFileType = {
@@ -41,6 +44,11 @@ export type photoFileType = {
 
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileActionsTypes): InitialStateType => {
     switch (action.type) {
+        case PROFILE_UPDATE_SUCCESS:
+            return {
+                ...state,
+                profileUpdateSuccess: action.profileUpdateSuccess
+            }
         case CHANGE_PHOTO:
             return {...state, profile: {...state.profile, photos: action.file}}
         case DELETE_POST:
@@ -78,6 +86,7 @@ export const getStatusAC = (status: string) => ({type: GET_STATUS, status} as co
 export const deletePost = (postId: number) => ({type: DELETE_POST, postId} as const)
 export const changePhotoAC = (file: photoFileType) => ({type: CHANGE_PHOTO, file} as const)
 export const editProfileDataAC = (profile: ProfileType) => ({type: EDIT_PROFILE, profile} as const)
+export const changeProfileUpdateSuccessAC = (profileUpdateSuccess: boolean) => ({type: PROFILE_UPDATE_SUCCESS, profileUpdateSuccess} as const)
 
 // TYPES
 export type InitialStateType = typeof initialState
@@ -87,6 +96,7 @@ export type ProfileActionsTypes = ReturnType<typeof AddPostActionCreator>
     | ReturnType<typeof deletePost>
     | ReturnType<typeof changePhotoAC>
     | ReturnType<typeof editProfileDataAC>
+    | ReturnType<typeof changeProfileUpdateSuccessAC>
 export type PostsType = {
     id: number
     message: string
@@ -95,6 +105,7 @@ export type PostsType = {
 
 // THUNKS
 export const getProfileTC = (userId: string) => async (dispatch: Dispatch<ProfileActionsTypes>) => {
+    debugger
     const response = await profileAPI.getProfile(userId)
     dispatch(setUserProfile(response.data))
 }
@@ -118,11 +129,18 @@ export const changePhotoTC = (file: photoFileType) => async (dispatch: Dispatch<
     }
 }
 
-export const editProfileDataTC = (formData: ProfileFormDataType): ThunkAction<void, AllAppStateType, unknown, AllAppActionType> => async (dispatch, getState) => {
+export const editProfileDataTC = (formData: ProfileType): ThunkAction<void, AllAppStateType, unknown, AllAppActionType> => async (dispatch, getState) => {
     debugger
     const userId = getState().auth.id
     const response = await profileAPI.editProfileData(formData)
     if (response.data.resultCode === 0) {
         dispatch(getProfileTC(userId.toString()))
+        dispatch(changeProfileUpdateSuccessAC(false))
+    } else{
+        let message = response.data.messages[0]
+        // let indexStrelki = message.indexOf('>')
+        let field = message.slice(message.indexOf('>') + 1, -1).toLowerCase()
+        dispatch(stopSubmit("Edit profile", { contacts: {[field]: message}}))
+        dispatch(changeProfileUpdateSuccessAC(true))
     }
 }

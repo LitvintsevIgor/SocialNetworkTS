@@ -51,7 +51,7 @@ export const profileAPI = {
             headers: { "Content-Type": "multipart/form-data" }
         })
     },
-    async editProfileData(profile: ProfileFormDataType) {
+    async editProfileData(profile: ProfileType) {
         return await instance.put('profile', profile)
     }
 }
