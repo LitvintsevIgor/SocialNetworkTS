@@ -25,12 +25,18 @@ export const authAPI = {
     async authMe () {
         return await instance.get(`auth/me`)
     },
-    async loginMe (email: string, password: string, rememberMe: boolean = false) {
-        return await instance.post(`auth/login`, {email, password, rememberMe})
+    async loginMe (email: string, password: string, rememberMe: boolean = false, captcha: string) {
+        return await instance.post(`auth/login`, {email, password, rememberMe, captcha})
     },
     async logoutMe () {
         return await instance.delete(`auth/login`)
     },
+}
+
+export const securityAPI = {
+    async getCaptchaUrl () {
+        return await instance.get(`/security/get-captcha-url`)
+    }
 }
 
 export const profileAPI = {

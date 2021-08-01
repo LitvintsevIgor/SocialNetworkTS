@@ -105,7 +105,6 @@ export type PostsType = {
 
 // THUNKS
 export const getProfileTC = (userId: string) => async (dispatch: Dispatch<ProfileActionsTypes>) => {
-    debugger
     const response = await profileAPI.getProfile(userId)
     dispatch(setUserProfile(response.data))
 }
@@ -130,7 +129,6 @@ export const changePhotoTC = (file: photoFileType) => async (dispatch: Dispatch<
 }
 
 export const editProfileDataTC = (formData: ProfileType): ThunkAction<void, AllAppStateType, unknown, AllAppActionType> => async (dispatch, getState) => {
-    debugger
     const userId = getState().auth.id
     const response = await profileAPI.editProfileData(formData)
     if (response.data.resultCode === 0) {
