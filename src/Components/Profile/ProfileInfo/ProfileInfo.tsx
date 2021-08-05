@@ -6,8 +6,12 @@ import {ProfileStatusWithHooks} from "./ProfileStatusWithHooks";
 import UserAvatar from "../../../assets/images/UserAvatar.jpeg";
 import {photoFileType} from "../../../redux/profile-reducer";
 import {ProfileDataReduxForm} from "./ProfileDataReduxForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AllAppStateType} from "../../../redux/redux-store";
+import {Button} from "antd";
+
+import "antd/dist/antd.less";
+
 
 
 type ProfileInfoPropsType = {
@@ -104,7 +108,8 @@ export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, c
             </div>
             <Contacts contacts={profile.contacts}/>
             <div>
-                {isOwner && <button onClick={ changeEditMode }>Edit profile info</button>}
+                {/*{isOwner && <button onClick={ changeEditMode }>Edit profile info</button>}*/}
+                {isOwner && <Button type="primary" onClick={ changeEditMode }>Edit profile info</Button>}
             </div>
         </div>
     )

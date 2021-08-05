@@ -6,6 +6,7 @@ import {ThunkAction} from "redux-thunk";
 import {AllAppActionType, AllAppStateType} from "./redux-store";
 import {StateType} from "./store";
 import {stopSubmit} from "redux-form";
+import {message} from 'antd';
 
 const ADD_POST = "PROFILE/ADD-POST";
 const SET_USER_PROFILE = "PROFILE/SET_USER_PROFILE";
@@ -86,7 +87,10 @@ export const getStatusAC = (status: string) => ({type: GET_STATUS, status} as co
 export const deletePost = (postId: number) => ({type: DELETE_POST, postId} as const)
 export const changePhotoAC = (file: photoFileType) => ({type: CHANGE_PHOTO, file} as const)
 export const editProfileDataAC = (profile: ProfileType) => ({type: EDIT_PROFILE, profile} as const)
-export const changeProfileUpdateSuccessAC = (profileUpdateSuccess: boolean) => ({type: PROFILE_UPDATE_SUCCESS, profileUpdateSuccess} as const)
+export const changeProfileUpdateSuccessAC = (profileUpdateSuccess: boolean) => ({
+    type: PROFILE_UPDATE_SUCCESS,
+    profileUpdateSuccess
+} as const)
 
 // TYPES
 export type InitialStateType = typeof initialState
@@ -115,10 +119,17 @@ export const getStatusTC = (userId: string) => async (dispatch: Dispatch<Profile
 }
 
 export const updateStatusTC = (status: string) => async (dispatch: Dispatch<ProfileActionsTypes>) => {
-    const response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
-        dispatch(getStatusAC(status))
+    try {
+        const response = await profileAPI.updateStatus(status)
+        if (response.data.resultCode === 0) {
+            dispatch(getStatusAC(status))
+        } else {
+            message.error({content: response.data.messages[0], duration: 1.5})
+        }
+    } catch (error) {
+        message.error({content: error.message, duration: 1.5})
     }
+
 }
 
 export const changePhotoTC = (file: photoFileType) => async (dispatch: Dispatch<ProfileActionsTypes>) => {
@@ -131,14 +142,15 @@ export const changePhotoTC = (file: photoFileType) => async (dispatch: Dispatch<
 export const editProfileDataTC = (formData: ProfileType): ThunkAction<void, AllAppStateType, unknown, AllAppActionType> => async (dispatch, getState) => {
     const userId = getState().auth.id
     const response = await profileAPI.editProfileData(formData)
+
     if (response.data.resultCode === 0) {
         dispatch(getProfileTC(userId.toString()))
         dispatch(changeProfileUpdateSuccessAC(false))
-    } else{
+    } else {
         let message = response.data.messages[0]
         // let indexStrelki = message.indexOf('>')
         let field = message.slice(message.indexOf('>') + 1, -1).toLowerCase()
-        dispatch(stopSubmit("Edit profile", { contacts: {[field]: message}}))
+        dispatch(stopSubmit("Edit profile", {contacts: {[field]: message}}))
         dispatch(changeProfileUpdateSuccessAC(true))
     }
 }

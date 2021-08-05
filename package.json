@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://LitvintsevIgor.github.io/SocialNetworkTS",
   "dependencies": {
+    "@craco/craco": "^6.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,7 +16,9 @@
     "@types/react-test-renderer": "^17.0.1",
     "@types/redux-form": "^8.3.1",
     "@types/redux-thunk": "^2.1.0",
+    "antd": "^4.16.10",
     "axios": "^0.21.1",
+    "craco-less": "^1.18.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.3",
@@ -30,9 +33,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"

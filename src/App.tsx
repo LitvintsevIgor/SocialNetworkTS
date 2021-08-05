@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {Navbar} from "./Components/Navbar/Navbar";
-import {HashRouter, Route, withRouter} from "react-router-dom";
+import {HashRouter, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
 import UsersContainer from "./Components/Users/UsersContainer";
@@ -13,6 +13,8 @@ import {InitializedSuccessTC} from "./redux/app-reducer";
 import {Preloader} from "./Components/common/Preloader/Preloader";
 import store, {AllAppStateType} from "./redux/redux-store";
 import {withSuspense} from "./hoc/WithSuspense";
+import {message} from 'antd';
+import "antd/dist/antd.less";
 
 
 const DialogsContainer = React.lazy(() => import('./Components/Dialogs/DialogsContainer'));
@@ -25,8 +27,23 @@ type AppType = {
 
 class App extends React.Component<AppType> {
 
+    onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        console.log(e, 'I was closed.');
+    };
+
     componentDidMount() {
         this.props.InitializedSuccessTC(); // thunkCreator
+
+        window.addEventListener("unhandledrejection", (e) => {
+            message.error({ content: e.reason.toString(), duration: 1.5})
+
+        });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", (e) => {
+            message.error(e.reason.toString());
+        });
     }
 
     render() {
@@ -37,12 +54,16 @@ class App extends React.Component<AppType> {
                     <HeaderContainer/>
                     <Navbar/>
                     <div className={"app-wrapper-content"}>
-                        <Route path={"/login"} render={() => <Login/>}/>
-                        <Route path={"/profile/:userId?"} render={withSuspense(ProfileContainer)}/>
-                        <Route path={"/dialogs"} render={withSuspense(DialogsContainer)}/>
-                        <Route path={"/users"} render={() => <UsersContainer/>}/>
-                        <Route path={"/news"} component={() => <News/>}/>
-                        <Route path={"/music"} component={() => <Music/>}/>
+                        <Switch>
+                            <Route exact path={"/"} render={() => <Redirect to={"/profile"}/>}/>
+                            <Route path={"/login"} render={() => <Login/>}/>
+                            <Route path={"/profile/:userId?"} render={withSuspense(ProfileContainer)}/>
+                            <Route path={"/dialogs"} render={withSuspense(DialogsContainer)}/>
+                            <Route path={"/users"} render={() => <UsersContainer/>}/>
+                            <Route path={"/news"} render={() => <News/>}/>
+                            <Route path={"/music"} render={() => <Music/>}/>
+                            <Route path={"*"} component={() => <div>404 NOT FOUND</div>}/>
+                        </Switch>
                     </div>
                 </div>
             );
