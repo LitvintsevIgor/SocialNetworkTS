@@ -28,7 +28,7 @@ let initialState = {
         lookingForAJobDescription: "",
         fullName: "",
         userId: 0,
-        photos: {}
+        photos: {large: null as null | string, small: null as null | string,}
     },
     status: "",
     profileUpdateSuccess: false
@@ -51,7 +51,7 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
                 profileUpdateSuccess: action.profileUpdateSuccess
             }
         case CHANGE_PHOTO:
-            return {...state, profile: {...state.profile, photos: action.file}}
+            return {...state, profile: {...state.profile, photos: action.photo}}
         case DELETE_POST:
             return {...state, posts: state.posts.filter((p) => p.id !== action.postId)}
         case ADD_POST:
@@ -85,7 +85,7 @@ export const AddPostActionCreator = (newPostBody: string) => ({type: ADD_POST, n
 export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const)
 export const getStatusAC = (status: string) => ({type: GET_STATUS, status} as const)
 export const deletePost = (postId: number) => ({type: DELETE_POST, postId} as const)
-export const changePhotoAC = (file: photoFileType) => ({type: CHANGE_PHOTO, file} as const)
+export const changePhotoAC = (photo: { large: string; small: string; }) => ({type: CHANGE_PHOTO, photo} as const)
 export const editProfileDataAC = (profile: ProfileType) => ({type: EDIT_PROFILE, profile} as const)
 export const changeProfileUpdateSuccessAC = (profileUpdateSuccess: boolean) => ({
     type: PROFILE_UPDATE_SUCCESS,

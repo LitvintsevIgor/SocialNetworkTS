@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useRef} from "react";
 import s from "./ProfileInfo.module.css";
 import {Preloader} from "../../common/Preloader/Preloader";
 import {ProfileType} from "../ProfileContainer";
@@ -8,7 +8,8 @@ import {photoFileType} from "../../../redux/profile-reducer";
 import {ProfileDataReduxForm} from "./ProfileDataReduxForm";
 import {useDispatch, useSelector} from "react-redux";
 import {AllAppStateType} from "../../../redux/redux-store";
-import {Button} from "antd";
+import {Upload, message, Button, Input} from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 import "antd/dist/antd.less";
 
@@ -36,6 +37,16 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
 
     const profileUpdateSuccess = useSelector<AllAppStateType, boolean>( state =>  state.profilePage.profileUpdateSuccess)
 
+    // Create a reference to the hidden file input element
+    const hiddenFileInput = useRef(null);
+    // Programatically click the hidden file input element
+    // when the Button component is clicked
+    const handleClick = (event: any) => {
+        // @ts-ignore
+        hiddenFileInput.current && hiddenFileInput.current.click();
+    };
+
+
     const onSubmit = (formData: ProfileType) => {
         editProfileDataTC(formData)
     }
@@ -55,13 +66,23 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
         }
     }
 
+
+
+
     return (
         <div className={s.profileInfo}>
             <div className={s.description}>
-
                 <img src={profile.photos.large || UserAvatar} className={s.mainPhoto}/>
                 <div>
-                    {isOwner && <input type={"file"} onChange={onPhotoChange}/>}
+                    {/*{isOwner && <input type={"file"} onChange={onPhotoChange}/>}*/}
+                    {isOwner &&
+                    <>
+                        <Button onClick={handleClick} type={"primary"}>
+                            Change photo
+                        </Button>
+                        <input type={"file"} onChange={onPhotoChange} ref={hiddenFileInput} style={{visibility: "hidden"}}/>
+                    </>
+                    }
                 </div>
                 <ProfileStatusWithHooks status={status}
                                         updateStatus={updateStatus}

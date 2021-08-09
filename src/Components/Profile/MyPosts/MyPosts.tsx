@@ -34,9 +34,9 @@ export const MyPosts = React.memo((props: MyPostsPropsType) => {
                 <MyPostReduxForm onSubmit={addNewPost}/>
             </div>
 
-            <div className={s.post}>
-                new post
-            </div>
+            {/*<div className={s.post}>*/}
+            {/*    new post*/}
+            {/*</div>*/}
             {postsElements}
         </div>
     )
